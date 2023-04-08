@@ -1,14 +1,14 @@
-package net.diamonddev.template;
+package net.diamonddev.ddvorigins;
 
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TemplateMod implements ModInitializer {
+public class DDVOrigins implements ModInitializer {
 
-	public static final String modid = "modid";
-	public static final Logger LOGGER = LoggerFactory.getLogger("Mod Name");
+	public static final String modid = "ddvorigins";
+	public static final Logger LOGGER = LoggerFactory.getLogger("DDV Origins Plugin");
 
 	@Override
 	public void onInitialize() {
