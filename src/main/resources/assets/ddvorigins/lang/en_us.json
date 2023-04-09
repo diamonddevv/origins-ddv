@@ -1,3 +1,6 @@
 {
-  "ddvorigins.modmenu.microwave": "Microwave"
+  "ddvorigins.modmenu.microwave": "Microwave",
+
+  "item.ddvorigins.layered_orb": "Layered Orb of Origin",
+  "ddvorigins.tooltip.layer": "§7Layer:§r %s"
 }

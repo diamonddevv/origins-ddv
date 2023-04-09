@@ -3,7 +3,7 @@ package net.diamonddev.ddvorigins.nbt;
 import io.github.apace100.origins.origin.OriginLayer;
 import net.minecraft.item.ItemStack;
 
-public class NbtManager {
+public class DDVOriginsNbtManager {
     private static final NbtOriginLayerComponent LAYER = new NbtOriginLayerComponent("layer");
 
     public static class LayerComponentManager {

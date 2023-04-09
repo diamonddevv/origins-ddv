@@ -20,6 +20,12 @@
   "entrypoints": {
     "main": [
       "net.diamonddev.ddvorigins.DDVOrigins"
+    ],
+    "client": [
+      "net.diamonddev.ddvorigins.DDVOriginsClient"
+    ],
+    "libgenetics": [
+      "net.diamonddev.ddvorigins.impl.LibGeneticsApiImpl"
     ]
   },
   "mixins": [
@@ -39,7 +45,7 @@
     "fabric": "*",
     "minecraft": "~1.19",
     "java": ">=17",
-    "origins": ">=v1.8.1",
+    "origins": ">=1.8.1",
     "libgenetics": ">=1.0.0"
   },
   "suggests": {
