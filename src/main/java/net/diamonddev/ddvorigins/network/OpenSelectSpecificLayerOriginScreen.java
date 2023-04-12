@@ -3,7 +3,7 @@ package net.diamonddev.ddvorigins.network;
 import io.github.apace100.origins.origin.OriginLayer;
 import io.github.apace100.origins.origin.OriginLayers;
 import io.github.apace100.origins.screen.ChooseOriginScreen;
-import net.diamonddev.libgenetics.common.api.v1.network.nerve.NervePacket;
+import net.diamonddev.libgenetics.common.api.v1.network.nerve.NerveNetworker;
 import net.diamonddev.libgenetics.common.api.v1.network.nerve.NerveS2CPacket;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
@@ -26,14 +26,14 @@ public class OpenSelectSpecificLayerOriginScreen implements NerveS2CPacket<OpenS
 
     @Override
     public PacketByteBuf write(Data data) {
-        PacketByteBuf buf = NervePacket.getNewBuf();
+        var buf = NerveNetworker.getNewBuf();
         buf.writeIdentifier(data.layerId);
         return buf;
     }
 
     @Override
     public Data read(PacketByteBuf buf) {
-        Data data = new Data();
+        var data = new Data();
         data.layerId = buf.readIdentifier();
         return data;
     }

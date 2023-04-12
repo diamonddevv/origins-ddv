@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "#origins:unphasable",
+    "minecraft:obsidian",
+    "minecraft:crying_obsidian",
+    "minecraft:lava",
+    "minecraft:bedrock",
+    "minecraft:barrier",
+    "minecraft:tinted_glass"
+  ]
+}

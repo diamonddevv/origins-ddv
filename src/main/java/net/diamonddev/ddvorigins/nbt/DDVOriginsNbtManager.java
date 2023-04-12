@@ -8,7 +8,11 @@ public class DDVOriginsNbtManager {
 
     public static class LayerComponentManager {
         public static OriginLayer getLayer(ItemStack stack) {
-            return LAYER.read(stack.getOrCreateNbt());
+            try {
+                return LAYER.read(stack.getOrCreateNbt());
+            } catch (IllegalArgumentException e) {
+                return null;
+            }
         }
 
         public static void setLayer(ItemStack stack, OriginLayer layer) {

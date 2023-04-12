@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "#ddvorigins:amplifying_blocks",
+    "#ddvorigins:cancelling_blocks",
+    "minecraft:air",
+    "minecraft:glass",
+    "minecraft:glass_pane",
+    "minecraft:cave_air",
+    "minecraft:void_air",
+    "minecraft:water"
+  ]
+}

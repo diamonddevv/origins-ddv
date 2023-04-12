@@ -1,0 +1,15 @@
+{
+  "powers": [
+    "ddvorigins:vai/vaision",
+    "ddvorigins:vai/atomrelocate",
+    "ddvorigins:vai/timebend",
+    "ddvorigins:vai/unnatural",
+    "ddvorigins:vai/halfsoul"
+  ],
+  "icon": {
+    "item": "minecraft:spectral_arrow",
+    "nbt": "{Enchantments:[{}]}"
+  },
+  "order": 5,
+  "impact": 2
+}

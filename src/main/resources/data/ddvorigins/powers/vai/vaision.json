@@ -1,0 +1,16 @@
+{
+  "type": "apoli:entity_glow",
+  "entity_condition": {
+    "type": "apoli:and",
+    "conditions": [
+      {
+        "type": "apoli:health",
+        "comparison": "<=",
+        "compare_to": 8
+      },
+      {
+        "type": "ddvorigins:is_living"
+      }
+    ]
+  }
+}

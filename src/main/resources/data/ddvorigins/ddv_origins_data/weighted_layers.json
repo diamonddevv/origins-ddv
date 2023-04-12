@@ -1,0 +1,14 @@
+{
+  "resource_type": "ddvorigins:weighted_layers",
+
+  "weights": [
+    {
+      "key": "origins:origin",
+      "weight": 1
+    },
+    {
+      "key": "origins-classes:class",
+      "weight": 5
+    }
+  ]
+}
