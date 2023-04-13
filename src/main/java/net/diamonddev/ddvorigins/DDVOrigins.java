@@ -3,10 +3,7 @@ package net.diamonddev.ddvorigins;
 import io.github.apace100.origins.origin.OriginLayer;
 import io.github.apace100.origins.registry.ModItems;
 import net.diamonddev.ddvorigins.item.LayerOriginSwitchItem;
-import net.diamonddev.ddvorigins.registry.InitDamageSources;
-import net.diamonddev.ddvorigins.registry.InitItems;
-import net.diamonddev.ddvorigins.registry.InitPowers;
-import net.diamonddev.ddvorigins.registry.InitResources;
+import net.diamonddev.ddvorigins.registry.*;
 import net.diamonddev.ddvorigins.resource.WeightedLayersType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
@@ -34,6 +31,7 @@ public class DDVOrigins implements ModInitializer {
 		//
 
 		new InitItems().register();
+		new InitEffects().register();
 		new InitDamageSources().register();
 		new InitResources().register();
 		new InitPowers().register();

@@ -30,7 +30,7 @@ public class ResourceListener extends CognitionDataListener {
 
     @Override
     public void onFinishReload() {
-
+        DDVOrigins.LOGGER.info("Added {} Layers to the Weightmap.", WeightedLayersType.WEIGHTMAP.size());
     }
 
     @Override

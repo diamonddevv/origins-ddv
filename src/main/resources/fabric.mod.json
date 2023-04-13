@@ -26,6 +26,9 @@
     ],
     "libgenetics": [
       "net.diamonddev.ddvorigins.impl.LibGeneticsApiImpl"
+    ],
+    "cardinal-components-entity": [
+      "net.diamonddev.ddvorigins.impl.CCAEntityInitializerImpl"
     ]
   },
   "mixins": [
@@ -37,7 +40,11 @@
       "links": {
         "ddvorigins.modmenu.microwave": "https://i.kym-cdn.com/entries/icons/original/000/029/618/cover7.jpg"
       }
-    }
+    },
+
+    "cardinal-components": [
+      "ddvorigins:gravity_modifier"
+    ]
   },
 
   "depends": {
