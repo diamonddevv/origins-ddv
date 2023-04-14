@@ -6,6 +6,7 @@ import io.github.apace100.calio.data.SerializableDataTypes;
 import net.diamonddev.ddvorigins.DDVOrigins;
 import net.diamonddev.ddvorigins.registry.InitDamageSources;
 import net.diamonddev.ddvorigins.util.FXUtil;
+import net.diamonddev.ddvorigins.util.TriFunction;
 import net.diamonddev.libgenetics.common.api.v1.util.TriConsumer;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -22,12 +23,13 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.List;
+import java.util.function.BiConsumer;
 
 public class VaiRelocateEntityAction { // alot of the code for this was taken from the raycast code so yeah
 
     private static void action(SerializableData.Instance data, Entity entity) {
-        Vec3d originPoint = entity.getPos();
-        VaiRelocationInstance relocationInstance = new VaiRelocationInstance(data, entity, originPoint, data.getDouble("distance"));
+        Vec3d originPoint = entity.getEyePos();
+        VaiRelocationInstance relocationInstance = new VaiRelocationInstance(data, entity, originPoint, data.getDouble("distance"), data.getInt("max_amplifies"));
         relocationInstance.before();
         relocationInstance.execute();
     }
@@ -51,89 +53,99 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
         private final Vec3d rotVec;
 
         private final int maxAmplifies;
+        private boolean targetMet;
         private boolean continuing;
 
         private int amplifications = 0;
 
-        public VaiRelocationInstance(SerializableData.Instance data, Entity entity, Vec3d originPoint, double distance) {
+        public VaiRelocationInstance(SerializableData.Instance data, Entity entity, Vec3d originPoint, double distance, int maxAmplifies) {
             this.data = data;
             this.entity = entity;
 
-            this.maxAmplifies = data.getInt("max_amplifies");
+            this.maxAmplifies = maxAmplifies;
 
             this.originPoint = originPoint;
             this.rotVec = entity.getRotationVec(1);
             this.target = originPoint.add(rotVec.multiply(distance));
 
             this.continuing = true;
+            this.targetMet = false;
         }
 
         public void execute() {
-            onStep(((blockPos, blockState, step) -> {
-                FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.ENCHANTED_HIT, true, entity.getX(), entity.getY(), entity.getZ(), 0f, 0f, 0f, 0f, 1), entity.world);
+            onStep(((vec, blockState, step) -> {
+                BlockPos pos = new BlockPos(vec);
+                FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.ENCHANTED_HIT, true, pos.toCenterPos().getX(), pos.toCenterPos().getY(), pos.toCenterPos().getZ(), 0f, 0f, 0f, 0f, 5), entity.world);
 
                 if (shouldCancel(blockState)) {
-                    onCancelled(blockPos);
-                    return;
+                    onCancelled(vec);
+                    return true;
                 }
 
                 if (shouldAmplify(blockState)) {
-                    onAmplify(blockPos);
-                    return;
+                    onAmplify(vec);
+                    return true;
+                }
+
+                List<Entity> entities = entity.world.getOtherEntities(null, new Box(vec, vec), VaiRelocationInstance::shouldIgnoreEntity);
+                if (!entities.isEmpty()) {
+                    hitsEntity(entities.get(0));
+                    return true;
                 }
 
                 if (!shouldIgnoreBlock(blockState)) {
-                    hitsBlock(blockPos);
-                    return;
+                    hitsBlock(vec);
+                    return true;
                 }
 
-                List<Entity> entities = entity.world.getOtherEntities(null, new Box(blockPos, blockPos), VaiRelocationInstance::shouldIgnoreEntity);
-                if (!entities.isEmpty()) {
-                    hitsEntity(entities.get(0));
-                    return;
-                }
-
-                if (step >= originPoint.distanceTo(target)) {
-                    hitsNothing();
-                }
-            }));
+                return false;
+            }),
+                    ((vec, blockState) -> {
+                        if (targetMet) hitsNothing();
+                    })
+            );
 
         }
 
-        private void onStep(TriConsumer<BlockPos, BlockState, Double> performEachStep) {
+        private void onStep(TriFunction<Vec3d, BlockState, Double, Boolean> performEachStep, BiConsumer<Vec3d, BlockState> performAtEnd) {
             Vec3d direction = target.subtract(originPoint).normalize();
             double length = originPoint.distanceTo(target);
-            for(double current = 0; current < length; current++) {
+            for(double current = 0; current <= length; current += 0.125) {
                 if (continuing) {
                     Vec3d pos = originPoint.add(direction.multiply(current));
-                    BlockPos bp = new BlockPos(pos);
-                    performEachStep.accept(bp, entity.world.getBlockState(bp), current);
+                    continuing = !performEachStep.accept(pos, entity.world.getBlockState(new BlockPos(pos)), current);
                 }
             }
+            if (continuing) targetMet = true;
+            performAtEnd.accept(target, entity.world.getBlockState(new BlockPos(target)));
+        }
+
+        private static void teleport(Entity entityToTeleport, boolean upOne, Vec3d coords) {
+            if (!upOne) entityToTeleport.teleport(coords.x, coords.y, coords.z);
+            else entityToTeleport.teleport(coords.x, coords.y + 1, coords.z);
         }
 
         private void hitsEntity(Entity target) {
-            entity.teleport(target.getX(), target.getY(), target.getZ());
-            target.damage(InitDamageSources.RELOCATED_INTO, 8f);
+            teleport(entity, false, target.getPos());
+            target.damage(InitDamageSources.RelocationDamageSource.create(entity), 8f);
             after();
         }
-        private void hitsBlock(BlockPos target) {
-            entity.teleport(target.getX(), target.getY(), target.getZ());
+        private void hitsBlock(Vec3d target) {
+            teleport(entity, true, target);
             after();
         }
         private void hitsNothing() {
-            entity.teleport(target.getX(), target.getY(), target.getZ());
+            teleport(entity, false, target);
             after();
         }
-        private void onCancelled(BlockPos cancelPos) {
+
+        private void onCancelled(Vec3d cancelPos) {
             FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.ENCHANTED_HIT, true, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 0.1f, 0.1f, 0.1f, 0f, 50), entity.world);
             FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.CRIT, true, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 0.1f, 0.1f, 0.1f, 0f, 50), entity.world);
             FXUtil.playSounds(new FXUtil.SoundsData(Registries.SOUND_EVENT.get(new Identifier("minecraft:entity.ender_eye.death")), SoundCategory.MASTER, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 1f, 0.1f), entity.world);
             FXUtil.playSounds(new FXUtil.SoundsData(Registries.SOUND_EVENT.get(new Identifier("minecraft:entity.ender_eye.death")), SoundCategory.MASTER, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 1f, 2f), entity.world);
-
-            continuing = false;
         }
-        private void onAmplify(BlockPos amplificationPos) {
+        private void onAmplify(Vec3d amplificationPos) {
             if (amplifications <= maxAmplifies) {
                 FXUtil.spawnParticles(
                         List.of(
@@ -147,10 +159,11 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
                                 new FXUtil.SoundsData(SoundEvents.BLOCK_ENDER_CHEST_CLOSE,SoundCategory.MASTER, entity.getX(), entity.getY(), entity.getZ(), 1f, 0.4f)
                         ), entity.world);
 
-                continuing = false;
                 amplifications++;
 
-                var next = new VaiRelocationInstance(data, entity, new Vec3d(amplificationPos.getX(), amplificationPos.getY(), amplificationPos.getZ()), data.getDouble("amplify_distance"));
+                var next = new VaiRelocationInstance(data, entity,
+                        amplificationPos.add(rotVec.multiply(1.5)),
+                        data.getDouble("amplify_distance"), maxAmplifies - 1);
                 next.execute();
             }
         }
@@ -175,7 +188,7 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
             FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.ENCHANTED_HIT, true, entity.getX(), entity.getY(), entity.getZ(), 0.1f, 0.5f, 0.1f, 0.3f, 100), entity.world);
         }
         public void after() {
-            FXUtil.playSounds(new FXUtil.SoundsData(Registries.SOUND_EVENT.get(new Identifier("minecraft:entity.enderman.teleport")), SoundCategory.MASTER, entity.getX(), entity.getY(), entity.getZ(), 1f, 0.8f), entity.world);
+            FXUtil.playSounds(new FXUtil.SoundsData(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.MASTER, entity.getX(), entity.getY(), entity.getZ(), 1f, 0.8f), entity.world);
         }
     }
 }

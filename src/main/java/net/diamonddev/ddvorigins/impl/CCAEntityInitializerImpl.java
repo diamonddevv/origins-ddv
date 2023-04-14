@@ -29,7 +29,7 @@ public class CCAEntityInitializerImpl implements EntityComponentInitializer {
         }
 
         public static void modifyGravity(LivingEntity living, Function<Double, Double> modifyFunction) {
-            GRAVITY_MODIFIER.get(living).write(modifyFunction.apply(GRAVITY_MODIFIER.get(living).read()));
+            GRAVITY_MODIFIER.get(living).modify(modifyFunction);
         }
 
         public static void resetGravity(LivingEntity living) {

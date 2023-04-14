@@ -3,6 +3,8 @@ package net.diamonddev.ddvorigins.cca;
 import dev.onyxstudios.cca.api.v3.component.Component;
 import net.minecraft.nbt.NbtCompound;
 
+import java.util.function.Function;
+
 public class DoubleComponent implements Component {
 
     private final String key;
@@ -30,6 +32,9 @@ public class DoubleComponent implements Component {
     }
     public double read() {
         return val;
+    }
+    public void modify(Function<Double, Double> function) {
+        write(function.apply(read()));
     }
 
     public double getDefault() {

@@ -3,6 +3,9 @@
   "values": [
     "#ddvorigins:amplifying_blocks",
     "#ddvorigins:cancelling_blocks",
+
+    "#minecraft:replaceable_plants",
+
     "minecraft:air",
     "minecraft:glass",
     "minecraft:glass_pane",

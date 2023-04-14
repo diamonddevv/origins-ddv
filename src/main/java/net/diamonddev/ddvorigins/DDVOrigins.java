@@ -5,6 +5,8 @@ import io.github.apace100.origins.registry.ModItems;
 import net.diamonddev.ddvorigins.item.LayerOriginSwitchItem;
 import net.diamonddev.ddvorigins.registry.*;
 import net.diamonddev.ddvorigins.resource.WeightedLayersType;
+import net.diamonddev.ddvorigins.util.DDVOriginsConfig;
+import net.diamonddev.libgenetics.common.api.v1.config.chromosome.ChromosomeConfigFileRegistry;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
@@ -29,15 +31,17 @@ public class DDVOrigins implements ModInitializer {
 	public void onInitialize() {
 		long start = System.currentTimeMillis();
 		//
+		DDVOriginsConfig.SERVER = ChromosomeConfigFileRegistry.registerAndReadAsSelf(DDVOrigins.id("server_config"), new DDVOriginsConfig.ServerCfg(), DDVOriginsConfig.ServerCfg.class);
 
 		new InitItems().register();
 		new InitEffects().register();
-		new InitDamageSources().register();
 		new InitResources().register();
 		new InitPowers().register();
 
 		TradeOfferHelper.registerWanderingTraderOffers(1, factories -> {
-			factories.add(new SellLayeredOrbFactory());
+			if (DDVOriginsConfig.SERVER.modConfig.canObtainLayeredOrbs) {
+				factories.add(new SellLayeredOrbFactory());
+			}
 		});
 
 		ItemGroupModifications.apply();
