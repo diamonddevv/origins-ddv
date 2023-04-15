@@ -1,9 +1,9 @@
 package net.diamonddev.ddvorigins.registry;
 
-import net.diamonddev.libgenetics.common.api.v1.interfaces.RegistryInitializer;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.EntityDamageSource;
+import net.minecraft.text.Text;
 
 public class InitDamageSources {
 
@@ -20,9 +20,18 @@ public class InitDamageSources {
     }
 
     public static class TimeDamageSource extends EntityDamageSource {
+        private static final String NAME = "vai_time";
         private TimeDamageSource(Entity source) {
-            super("vai_time", source);
-            this.setBypassesArmor().setUsesMagic();
+            super(NAME, source);
+            this.setUsesMagic();
+        }
+
+        @Override
+        public Text getDeathMessage(LivingEntity entity) {
+            String s = "death.attack." + this.name;
+            boolean bl = false;
+            if (this.source != null) return Text.translatable(s + ".entity", entity.getDisplayName(), source.getDisplayName());
+            else return Text.translatable(s, entity.getDisplayName());
         }
 
         public static TimeDamageSource create(Entity source) {

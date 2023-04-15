@@ -1,6 +1,5 @@
 package net.diamonddev.ddvorigins.impl;
 
-import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
@@ -10,9 +9,6 @@ import io.github.apace100.origins.origin.OriginLayer;
 import net.diamonddev.ddvorigins.item.LayerOriginSwitchItem;
 import net.diamonddev.ddvorigins.registry.InitItems;
 import net.diamonddev.libgenetics.common.api.LibGeneticsApi;
-import net.minecraft.command.argument.EntityArgumentType;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 
@@ -33,16 +29,6 @@ public class LibGeneticsApiImpl implements LibGeneticsApi {
                                         .then(argument("layer", LayerArgumentType.layer())
                                                 .executes(ApiImplCommandExecutors::exeGiveOrbWithLayer)
                                         )
-                                ).then(literal("gravitymodifier")
-                                        .then(argument("entity", EntityArgumentType.entity())
-                                                .then(literal("get")
-                                                        .executes(ApiImplCommandExecutors::exeGetGravityModifier)
-                                                ).then(literal("set")
-                                                        .then(argument("value", DoubleArgumentType.doubleArg())
-                                                                .executes(ApiImplCommandExecutors::exeSetGravityModifier)
-                                                        )
-                                                )
-                                        )
                                 )
                         )
         );
@@ -58,27 +44,6 @@ public class LibGeneticsApiImpl implements LibGeneticsApi {
             OriginLayer layer = LayerArgumentType.getLayer(context, "layer");
             context.getSource().getPlayer().giveItemStack(LayerOriginSwitchItem.getStackWithLayer(InitItems.LAYER_SWITCHER, layer.getIdentifier()));
             context.getSource().sendFeedback(Text.literal("Gave layered orb with layer: " + LayerOriginSwitchItem.parseLayerAsNiceString(layer)), true);
-            return 1;
-        }
-
-        public static int exeGetGravityModifier(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-            Entity entity = EntityArgumentType.getEntity(context, "entity");
-            if (entity instanceof LivingEntity living) {
-                String string = "Entity " + living.getDisplayName().getString() + " has gravity of " + CCAEntityInitializerImpl.GRAVITY_MODIFIER.get(living).read();
-                context.getSource().sendFeedback(Text.literal(string), false);
-            } else context.getSource().sendFeedback(Text.literal("Entity " + entity.getDisplayName().getString() + " is not living!"), false);
-
-            return 1;
-        }
-        public static int exeSetGravityModifier(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
-            Entity entity = EntityArgumentType.getEntity(context, "entity");
-            double d = DoubleArgumentType.getDouble(context, "value");
-            if (entity instanceof LivingEntity living) {
-                CCAEntityInitializerImpl.GRAVITY_MODIFIER.get(living).write(d);
-                String string = "Set gravity of entity " + living.getDisplayName().getString() + " to " + d;
-                context.getSource().sendFeedback(Text.literal(string), false);
-            } else context.getSource().sendFeedback(Text.literal("Entity " + entity.getDisplayName().getString() + " is not living!"), false);
-
             return 1;
         }
     }

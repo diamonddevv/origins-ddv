@@ -1,6 +1,5 @@
 package net.diamonddev.ddvorigins;
 
-import net.diamonddev.ddvorigins.client.ShaderManager;
 import net.diamonddev.ddvorigins.network.Netcode;
 import net.diamonddev.ddvorigins.util.DDVOriginsConfig;
 import net.diamonddev.libgenetics.common.api.v1.config.chromosome.ChromosomeConfigFileRegistry;
@@ -13,7 +12,5 @@ public class DDVOriginsClient implements ClientModInitializer {
         DDVOriginsConfig.CLIENT = ChromosomeConfigFileRegistry.registerAndReadAsSelf(DDVOrigins.id("client_config"), new DDVOriginsConfig.ClientCfg(), DDVOriginsConfig.ClientCfg.class);
 
         NervePacketRegistry.initClientS2CReciever(Netcode.SELECT_SPECIFIC_LAYER_ORIGIN_PACKET);
-
-        new ShaderManager().register();
     }
 }

@@ -14,9 +14,15 @@ public class DDVOriginsConfig {
         }
 
         public Mod modConfig = new Mod();
+        public OriginCfg originCfg = new OriginCfg();
 
         public static class Mod {
             public boolean canObtainLayeredOrbs = false;
+        }
+
+        public static class OriginCfg {
+            public double vaiRelocationLogicDensity = 0.125;
+            public double vaiRelocateIntoEntityLeeway = 0;
         }
     }
 
@@ -27,12 +33,6 @@ public class DDVOriginsConfig {
         }
 
         public GuiElements guiElementConfig = new GuiElements();
-        public ShaderEffects shaderEffectConfig = new ShaderEffects();
-
-        public static class ShaderEffects {
-            public boolean useTemporalAccelerationShader = true;
-            public boolean useTemporalDecelerationShader = true;
-        }
 
         public static class GuiElements {
             public boolean displayIconsOnRight = true;

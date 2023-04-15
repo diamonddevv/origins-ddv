@@ -5,9 +5,9 @@ import io.github.apace100.calio.data.SerializableData;
 import io.github.apace100.calio.data.SerializableDataTypes;
 import net.diamonddev.ddvorigins.DDVOrigins;
 import net.diamonddev.ddvorigins.registry.InitDamageSources;
+import net.diamonddev.ddvorigins.util.DDVOriginsConfig;
 import net.diamonddev.ddvorigins.util.FXUtil;
 import net.diamonddev.ddvorigins.util.TriFunction;
-import net.diamonddev.libgenetics.common.api.v1.util.TriConsumer;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -53,6 +53,7 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
         private final Vec3d rotVec;
 
         private final int maxAmplifies;
+        private final double density;
         private boolean targetMet;
         private boolean continuing;
 
@@ -63,6 +64,7 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
             this.entity = entity;
 
             this.maxAmplifies = maxAmplifies;
+            this.density = DDVOriginsConfig.SERVER.originCfg.vaiRelocationLogicDensity;
 
             this.originPoint = originPoint;
             this.rotVec = entity.getRotationVec(1);
@@ -87,7 +89,8 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
                     return true;
                 }
 
-                List<Entity> entities = entity.world.getOtherEntities(null, new Box(vec, vec), VaiRelocationInstance::shouldIgnoreEntity);
+                double d = DDVOriginsConfig.SERVER.originCfg.vaiRelocateIntoEntityLeeway;
+                List<Entity> entities = entity.world.getOtherEntities(null, new Box(vec.add(-d,-d,-d), vec.add(d,d,d)), this::shouldHitEntity);
                 if (!entities.isEmpty()) {
                     hitsEntity(entities.get(0));
                     return true;
@@ -110,7 +113,7 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
         private void onStep(TriFunction<Vec3d, BlockState, Double, Boolean> performEachStep, BiConsumer<Vec3d, BlockState> performAtEnd) {
             Vec3d direction = target.subtract(originPoint).normalize();
             double length = originPoint.distanceTo(target);
-            for(double current = 0; current <= length; current += 0.125) {
+            for(double current = 0; current <= length; current += density) {
                 if (continuing) {
                     Vec3d pos = originPoint.add(direction.multiply(current));
                     continuing = !performEachStep.accept(pos, entity.world.getBlockState(new BlockPos(pos)), current);
@@ -175,8 +178,8 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
             return state.isIn(TagKey.of(RegistryKeys.BLOCK, DDVOrigins.id("cancelling_blocks")));
         }
 
-        private static boolean shouldIgnoreEntity(Entity entity) {
-            return !(entity instanceof LivingEntity);
+        private boolean shouldHitEntity(Entity entity) {
+            return entity instanceof LivingEntity && entity != this.entity;
         }
         private static boolean shouldIgnoreBlock(BlockState state) {
             return state.isIn(TagKey.of(RegistryKeys.BLOCK, DDVOrigins.id("ignored_blocks")));
