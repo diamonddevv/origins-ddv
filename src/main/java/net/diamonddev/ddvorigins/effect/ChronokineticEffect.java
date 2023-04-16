@@ -2,6 +2,7 @@ package net.diamonddev.ddvorigins.effect;
 
 import net.diamonddev.ddvorigins.cca.ChronokinesisComponent;
 import net.diamonddev.ddvorigins.impl.CCAEntityInitializerImpl;
+import net.diamonddev.ddvorigins.registry.InitParticles;
 import net.diamonddev.ddvorigins.util.FXUtil;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.AttributeContainer;
@@ -18,10 +19,13 @@ import java.util.function.Consumer;
 
 public class ChronokineticEffect extends StatusEffect {
     public ChronokineticEffect() {
-        super(StatusEffectCategory.NEUTRAL, 0x8ba5c4);
+        super(StatusEffectCategory.NEUTRAL, 0xEFDE5F); // https://colornames.org/color/efde5f
         this.addAttributeModifier(EntityAttributes.GENERIC_MOVEMENT_SPEED, MathHelper.randomUuid().toString(), 1.5, EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
         this.addAttributeModifier(EntityAttributes.GENERIC_ATTACK_SPEED, MathHelper.randomUuid().toString(), 1.5, EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
         this.addAttributeModifier(EntityAttributes.GENERIC_FLYING_SPEED, MathHelper.randomUuid().toString(), 1.5, EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
+        this.addAttributeModifier(EntityAttributes.GENERIC_ATTACK_DAMAGE, MathHelper.randomUuid().toString(), 1.5, EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
+        this.addAttributeModifier(EntityAttributes.GENERIC_ARMOR, MathHelper.randomUuid().toString(), 1.5, EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
+        this.addAttributeModifier(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, MathHelper.randomUuid().toString(), 1.5, EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 
 
@@ -30,8 +34,19 @@ public class ChronokineticEffect extends StatusEffect {
     public void applyUpdateEffect(LivingEntity entity, int amplifier) {
         ChronokinesisComponent.ChronokinesisComponentData data = CCAEntityInitializerImpl.ChronokinesisManager.get(entity);
         if (data.allPresent()) {
-            FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.END_ROD, true, data.origin().x, data.origin().y + 2, data.origin().z, 0, 1, 0, 0.1f, 25), entity.world);
+            FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.END_ROD, true, data.origin().x, data.origin().y + 2, data.origin().z, 0f, 0f, 0f, 0f, 25), entity.world);
         }
+
+        FXUtil.spawnParticles(new FXUtil.ParticlesData<>(InitParticles.CLOCK, true, entity.getPos().x, entity.getPos().y + .5, entity.getPos().z, 0f, 0f, 0f, .15f, 10), entity.world);
+    }
+
+    @Override
+    public void onApplied(LivingEntity entity, AttributeContainer attributes, int amplifier) {
+        super.onApplied(entity, attributes, amplifier);
+
+        Vec3d origin = entity.getPos();
+        ChronokinesisComponent.ChronokinesisComponentData data = new ChronokinesisComponent.ChronokinesisComponentData(origin);
+        CCAEntityInitializerImpl.ChronokinesisManager.set(entity, data);
     }
 
     @Override

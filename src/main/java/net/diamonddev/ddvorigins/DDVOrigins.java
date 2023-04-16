@@ -35,6 +35,7 @@ public class DDVOrigins implements ModInitializer {
 
 		new InitItems().register();
 		new InitEffects().register();
+		new InitParticles().register();
 		new InitResources().register();
 		new InitPowers().register();
 

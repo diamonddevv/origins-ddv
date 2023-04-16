@@ -31,11 +31,5 @@ public class DDVOriginsConfig {
         public String getFilePathFromConfigDirectory() {
             return ".diamonddev/ddvorigins/client.json";
         }
-
-        public GuiElements guiElementConfig = new GuiElements();
-
-        public static class GuiElements {
-            public boolean displayIconsOnRight = true;
-        }
     }
 }

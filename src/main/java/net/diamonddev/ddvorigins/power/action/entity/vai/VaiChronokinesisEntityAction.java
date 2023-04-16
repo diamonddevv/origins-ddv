@@ -36,8 +36,6 @@ public class VaiChronokinesisEntityAction {
         private final Entity entity;
         private final int duration;
 
-        private Vec3d origin;
-
         private VaiChronokinesisActionInstance(SerializableData.Instance data, Entity entity, int duration) {
             this.data = data;
             this.entity = entity;
@@ -47,11 +45,6 @@ public class VaiChronokinesisEntityAction {
 
         public void execute() {
             if (entity instanceof LivingEntity living) {
-                origin = living.getPos();
-
-                ChronokinesisComponent.ChronokinesisComponentData data = new ChronokinesisComponent.ChronokinesisComponentData(origin);
-                CCAEntityInitializerImpl.ChronokinesisManager.set(living, data);
-
                 living.addStatusEffect(new StatusEffectInstance(InitEffects.CHRONOKINETIC, duration, 0));
             }
         }

@@ -4,10 +4,14 @@ import io.github.apace100.apoli.power.factory.action.ActionFactory;
 import io.github.apace100.calio.data.SerializableData;
 import io.github.apace100.calio.data.SerializableDataTypes;
 import net.diamonddev.ddvorigins.DDVOrigins;
+import net.diamonddev.ddvorigins.network.Netcode;
+import net.diamonddev.ddvorigins.network.SendCheckmarkIconPacket;
 import net.diamonddev.ddvorigins.registry.InitDamageSources;
 import net.diamonddev.ddvorigins.util.DDVOriginsConfig;
 import net.diamonddev.ddvorigins.util.FXUtil;
 import net.diamonddev.ddvorigins.util.TriFunction;
+import net.diamonddev.libgenetics.common.api.v1.network.nerve.NerveNetworker;
+import net.diamonddev.libgenetics.common.api.v1.util.VoidFunction;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -15,6 +19,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
@@ -147,6 +152,13 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
             FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.CRIT, true, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 0.1f, 0.1f, 0.1f, 0f, 50), entity.world);
             FXUtil.playSounds(new FXUtil.SoundsData(Registries.SOUND_EVENT.get(new Identifier("minecraft:entity.ender_eye.death")), SoundCategory.MASTER, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 1f, 0.1f), entity.world);
             FXUtil.playSounds(new FXUtil.SoundsData(Registries.SOUND_EVENT.get(new Identifier("minecraft:entity.ender_eye.death")), SoundCategory.MASTER, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 1f, 2f), entity.world);
+
+            if (entity instanceof ServerPlayerEntity spe) NerveNetworker.send(spe, Netcode.SEND_CHECKMARK_ICON_PACKET, (VoidFunction<SendCheckmarkIconPacket.Data>) () -> {
+                var data = new SendCheckmarkIconPacket.Data();
+                data.duration = 40;
+                data.isCheck = false;
+                return data;
+            });
         }
         private void onAmplify(Vec3d amplificationPos) {
             if (amplifications <= maxAmplifies) {

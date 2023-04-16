@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "DDV Origins",
-  "description": "Plugin for a server, i guess",
+  "description": "Origins Side Mod by DiamondDev, adding some origins and some utility things.",
   "authors": [
     "DiamondDev"
   ],

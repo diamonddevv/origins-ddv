@@ -1,8 +1,12 @@
 {
-  "type": "origins:active_self",
+  "type": "apoli:active_self",
   "entity_action": {
-    "type": "ddvorigins:vai_chronokinesis",
-    "duration": 10
+    "type": "apoli:apply_effect",
+    "effect": {
+      "effect": "ddvorigins:chronokinetic",
+      "duration": 200,
+      "is_ambient": true
+    }
   },
   "cooldown": 2400,
   "hud_render": {

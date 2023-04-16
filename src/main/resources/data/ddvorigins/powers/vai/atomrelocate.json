@@ -6,7 +6,7 @@
     "amplify_distance": 15,
     "max_amplifies": 5
   },
-  "cooldown": 20,
+  "cooldown": 30,
   "hud_render": {
     "sprite_location": "ddvorigins:textures/gui/resource/vai.png",
     "bar_index": 0

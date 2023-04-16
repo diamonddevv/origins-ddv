@@ -12,6 +12,7 @@
   "power.ddvorigins.vai/atomrelocate.description": "You can relocate your body particles to a location ahead of you.",
   "death.attack.vai_relocated_into": "%s was torn apart by a Vai relocating into them",
   "death.attack.vai_relocated_into.player": "%s was torn apart by %s relocating into them",
+  "text.ddvorigins.vai.relocate_cancelled": "Can't relocate here!",
   "power.ddvorigins.vai/chronokinesis.name": "Chronokinesis",
   "power.ddvorigins.vai/chronokinesis.description": "You bend spacetime, creating a loop that gives you immense strength for a limited time, before warping you back to the start of your loop.",
   "effect.ddvorigins.chronokinetic": "Chronokinetic",
