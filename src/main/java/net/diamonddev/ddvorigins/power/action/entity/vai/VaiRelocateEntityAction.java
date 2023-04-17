@@ -4,15 +4,14 @@ import io.github.apace100.apoli.power.factory.action.ActionFactory;
 import io.github.apace100.calio.data.SerializableData;
 import io.github.apace100.calio.data.SerializableDataTypes;
 import net.diamonddev.ddvorigins.DDVOrigins;
+import net.diamonddev.ddvorigins.network.HudIconPacketData;
 import net.diamonddev.ddvorigins.network.Netcode;
-import net.diamonddev.ddvorigins.network.SendHudIcon;
 import net.diamonddev.ddvorigins.registry.InitDamageSources;
 import net.diamonddev.ddvorigins.registry.InitEffects;
 import net.diamonddev.ddvorigins.util.DDVOriginsConfig;
 import net.diamonddev.ddvorigins.util.FXUtil;
 import net.diamonddev.ddvorigins.util.TriFunction;
 import net.diamonddev.libgenetics.common.api.v1.network.nerve.NerveNetworker;
-import net.diamonddev.libgenetics.common.api.v1.util.VoidFunction;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -158,12 +157,7 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
             FXUtil.playSounds(new FXUtil.SoundsData(Registries.SOUND_EVENT.get(new Identifier("minecraft:entity.ender_eye.death")), SoundCategory.MASTER, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 1f, 0.1f), entity.world);
             FXUtil.playSounds(new FXUtil.SoundsData(Registries.SOUND_EVENT.get(new Identifier("minecraft:entity.ender_eye.death")), SoundCategory.MASTER, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 1f, 2f), entity.world);
 
-            if (entity instanceof ServerPlayerEntity spe) NerveNetworker.send(spe, Netcode.SEND_CHECKMARK_ICON_PACKET, (VoidFunction<SendHudIcon.Data>) () -> {
-                var data = new SendHudIcon.Data();
-                data.duration = 40;
-                data.isCheck = false;
-                return data;
-            });
+            if (entity instanceof ServerPlayerEntity spe) NerveNetworker.send(spe, Netcode.SEND_HUD_ICON, HudIconPacketData.VAI_RELOCATE_FAILED.create());
         }
         private void onAmplify(Vec3d amplificationPos) {
             if (amplifications <= maxAmplifies) {
