@@ -1,9 +1,6 @@
 package net.diamonddev.ddvorigins.mixin;
 
-import net.diamonddev.ddvorigins.DDVOrigins;
-import net.diamonddev.ddvorigins.client.gui.CheckmarkHudIcon;
 import net.diamonddev.ddvorigins.client.gui.IHudIcon;
-import net.diamonddev.ddvorigins.util.DDVOriginsConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;

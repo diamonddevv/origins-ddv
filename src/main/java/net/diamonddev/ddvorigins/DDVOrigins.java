@@ -27,6 +27,8 @@ public class DDVOrigins implements ModInitializer {
 	public static final String modid = "ddvorigins";
 	public static final Logger LOGGER = LoggerFactory.getLogger("DDV Origins");
 
+	public static final Identifier PLACEHOLDER_TEXTURE = id("textures/gui/placeholder.png");
+
 	@Override
 	public void onInitialize() {
 		long start = System.currentTimeMillis();

@@ -5,8 +5,9 @@ import io.github.apace100.calio.data.SerializableData;
 import io.github.apace100.calio.data.SerializableDataTypes;
 import net.diamonddev.ddvorigins.DDVOrigins;
 import net.diamonddev.ddvorigins.network.Netcode;
-import net.diamonddev.ddvorigins.network.SendCheckmarkIconPacket;
+import net.diamonddev.ddvorigins.network.SendHudIcon;
 import net.diamonddev.ddvorigins.registry.InitDamageSources;
+import net.diamonddev.ddvorigins.registry.InitEffects;
 import net.diamonddev.ddvorigins.util.DDVOriginsConfig;
 import net.diamonddev.ddvorigins.util.FXUtil;
 import net.diamonddev.ddvorigins.util.TriFunction;
@@ -34,7 +35,8 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
 
     private static void action(SerializableData.Instance data, Entity entity) {
         Vec3d originPoint = entity.getEyePos();
-        VaiRelocationInstance relocationInstance = new VaiRelocationInstance(data, entity, originPoint, data.getDouble("distance"), data.getInt("max_amplifies"));
+        int i = entity instanceof LivingEntity living && living.hasStatusEffect(InitEffects.CHRONOKINETIC) ? 2 : 1;
+        VaiRelocationInstance relocationInstance = new VaiRelocationInstance(data, entity, originPoint, data.getDouble("distance"), data.getInt("max_amplifies"), i);
         relocationInstance.before();
         relocationInstance.execute();
     }
@@ -59,21 +61,24 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
 
         private final int maxAmplifies;
         private final double density;
+        private final int multiplier;
         private boolean targetMet;
         private boolean continuing;
 
         private int amplifications = 0;
 
-        public VaiRelocationInstance(SerializableData.Instance data, Entity entity, Vec3d originPoint, double distance, int maxAmplifies) {
+        public VaiRelocationInstance(SerializableData.Instance data, Entity entity, Vec3d originPoint, double distance, int maxAmplifies, int multiplier) {
             this.data = data;
             this.entity = entity;
+
+            this.multiplier = multiplier;
 
             this.maxAmplifies = maxAmplifies;
             this.density = DDVOriginsConfig.SERVER.originCfg.vaiRelocationLogicDensity;
 
             this.originPoint = originPoint;
             this.rotVec = entity.getRotationVec(1);
-            this.target = originPoint.add(rotVec.multiply(distance));
+            this.target = originPoint.add(rotVec.multiply(distance * multiplier));
 
             this.continuing = true;
             this.targetMet = false;
@@ -135,7 +140,7 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
 
         private void hitsEntity(Entity target) {
             teleport(entity, false, target.getPos());
-            target.damage(InitDamageSources.RelocationDamageSource.create(entity), 8f);
+            target.damage(InitDamageSources.RelocationDamageSource.create(entity), 8f * multiplier);
             after();
         }
         private void hitsBlock(Vec3d target) {
@@ -153,8 +158,8 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
             FXUtil.playSounds(new FXUtil.SoundsData(Registries.SOUND_EVENT.get(new Identifier("minecraft:entity.ender_eye.death")), SoundCategory.MASTER, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 1f, 0.1f), entity.world);
             FXUtil.playSounds(new FXUtil.SoundsData(Registries.SOUND_EVENT.get(new Identifier("minecraft:entity.ender_eye.death")), SoundCategory.MASTER, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 1f, 2f), entity.world);
 
-            if (entity instanceof ServerPlayerEntity spe) NerveNetworker.send(spe, Netcode.SEND_CHECKMARK_ICON_PACKET, (VoidFunction<SendCheckmarkIconPacket.Data>) () -> {
-                var data = new SendCheckmarkIconPacket.Data();
+            if (entity instanceof ServerPlayerEntity spe) NerveNetworker.send(spe, Netcode.SEND_CHECKMARK_ICON_PACKET, (VoidFunction<SendHudIcon.Data>) () -> {
+                var data = new SendHudIcon.Data();
                 data.duration = 40;
                 data.isCheck = false;
                 return data;
@@ -178,7 +183,7 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
 
                 var next = new VaiRelocationInstance(data, entity,
                         amplificationPos.add(rotVec.multiply(1.5)),
-                        data.getDouble("amplify_distance"), maxAmplifies - 1);
+                        data.getDouble("amplify_distance"), maxAmplifies - 1, this.multiplier);
                 next.execute();
             }
         }
