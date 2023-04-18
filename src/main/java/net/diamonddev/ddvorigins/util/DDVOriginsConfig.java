@@ -13,10 +13,10 @@ public class DDVOriginsConfig {
             return ".diamonddev/ddvorigins/server.json";
         }
 
-        public Mod modConfig = new Mod();
-        public OriginCfg originCfg = new OriginCfg();
+        public ModCfg modConfig = new ModCfg();
+        public OriginCfg originConfig = new OriginCfg();
 
-        public static class Mod {
+        public static class ModCfg {
             public boolean canObtainLayeredOrbs = false;
         }
 
@@ -30,6 +30,13 @@ public class DDVOriginsConfig {
         @Override
         public String getFilePathFromConfigDirectory() {
             return ".diamonddev/ddvorigins/client.json";
+        }
+
+        public GuiCfg guiConfig = new GuiCfg();
+
+        public static class GuiCfg {
+            public boolean renderHudIconTextures = true;
+            public boolean renderHudIconMessages = true;
         }
     }
 }

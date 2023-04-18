@@ -6,6 +6,7 @@ import io.github.apace100.apoli.power.factory.condition.ConditionFactory;
 import io.github.apace100.apoli.registry.ApoliRegistries;
 import io.github.apace100.calio.data.SerializableData;
 import net.diamonddev.ddvorigins.DDVOrigins;
+import net.diamonddev.ddvorigins.power.action.entity.SendHudIconEntityAction;
 import net.diamonddev.ddvorigins.power.action.entity.vai.VaiRelocateEntityAction;
 import net.diamonddev.libgenetics.common.api.v1.interfaces.RegistryInitializer;
 import net.minecraft.entity.Entity;
@@ -19,6 +20,7 @@ public class InitPowers implements RegistryInitializer {
 
         // Actions
         registerEntityAction(VaiRelocateEntityAction.getFactory());
+        registerEntityAction(SendHudIconEntityAction.getFactory());
 
         // Conditions
         registerEntityCondition(new ConditionFactory<>(

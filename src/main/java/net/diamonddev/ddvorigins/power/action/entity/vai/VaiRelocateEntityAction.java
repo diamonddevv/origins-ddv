@@ -73,7 +73,7 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
             this.multiplier = multiplier;
 
             this.maxAmplifies = maxAmplifies;
-            this.density = DDVOriginsConfig.SERVER.originCfg.vaiRelocationLogicDensity;
+            this.density = DDVOriginsConfig.SERVER.originConfig.vaiRelocationLogicDensity;
 
             this.originPoint = originPoint;
             this.rotVec = entity.getRotationVec(1);
@@ -98,7 +98,7 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
                     return true;
                 }
 
-                double d = DDVOriginsConfig.SERVER.originCfg.vaiRelocateIntoEntityLeeway;
+                double d = DDVOriginsConfig.SERVER.originConfig.vaiRelocateIntoEntityLeeway;
                 List<Entity> entities = entity.world.getOtherEntities(null, new Box(vec.add(-d,-d,-d), vec.add(d,d,d)), this::shouldHitEntity);
                 if (!entities.isEmpty()) {
                     hitsEntity(entities.get(0));

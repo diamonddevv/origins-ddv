@@ -8,6 +8,9 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class SendHudIcon implements NerveS2CPacket<SendHudIcon, SendHudIcon.Data> {
     @Override
@@ -25,7 +28,7 @@ public class SendHudIcon implements NerveS2CPacket<SendHudIcon, SendHudIcon.Data
     public PacketByteBuf write(Data data) {
         var buf = NerveNetworker.getNewBuf();
         IHudIcon.TextureData.writeTextureData(buf, data.textureData);
-        buf.writeText(data.text);
+        buf.writeNullable(data.text, PacketByteBuf::writeText);
         buf.writeInt(data.duration);
         buf.writeInt(data.color);
         return buf;
@@ -35,15 +38,15 @@ public class SendHudIcon implements NerveS2CPacket<SendHudIcon, SendHudIcon.Data
     public Data read(PacketByteBuf buf) {
         var data = new Data();
         data.textureData = IHudIcon.TextureData.readTextureData(buf);
-        data.text = buf.readText();
+        data.text = buf.readNullable(PacketByteBuf::readText);
         data.duration = buf.readInt();
         data.color = buf.readInt();
         return data;
     }
 
     public static class Data implements NerveS2CPacket.NervePacketData {
-        public IHudIcon.TextureData textureData;
-        public Text text;
+        @Nullable public IHudIcon.TextureData textureData;
+        @Nullable public Text text;
         public int duration;
         public int color;
     }
