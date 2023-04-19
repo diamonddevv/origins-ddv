@@ -1,0 +1,20 @@
+{
+  "type": "apoli:active_self",
+  "entity_action": {
+    "type": "ddvorigins:send_hud_icon",
+    "texture_data": {
+      "texture": "ddvorigins:textures/gui/tick_and_cross.png",
+      "u": 16,
+      "v": 0,
+      "width": 16,
+      "height": 16,
+      "sheet_width": 32,
+      "sheet_height": 16
+    },
+    "text": "Test"
+  },
+  "cooldown": 20,
+  "key": {
+    "key": "key.origins.primary_active"
+  }
+}

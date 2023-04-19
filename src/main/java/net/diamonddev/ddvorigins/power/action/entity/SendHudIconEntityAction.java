@@ -49,7 +49,7 @@ public class SendHudIconEntityAction {
                         .add("texture_data", TEXTURE_DATA_SERIALIZABLE_DATA_TYPE)
                         .add("duration", SerializableDataTypes.INT, 40)
                         .add("text", SerializableDataTypes.TEXT, null)
-                        .add("color", SerializableDataTypes.INT),
+                        .add("color", SerializableDataTypes.INT, 0xffffff),
                 SendHudIconEntityAction::action
         );
     }
