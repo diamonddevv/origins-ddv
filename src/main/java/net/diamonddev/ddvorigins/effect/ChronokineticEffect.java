@@ -10,10 +10,14 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.GameMode;
 
 import java.util.function.Consumer;
 
@@ -30,14 +34,16 @@ public class ChronokineticEffect extends StatusEffect {
 
 
 
-    @Override
-    public void applyUpdateEffect(LivingEntity entity, int amplifier) {
+
+    public static void tick(LivingEntity entity) {
         ChronokinesisComponent.ChronokinesisComponentData data = CCAEntityInitializerImpl.ChronokinesisManager.get(entity);
         if (data.allPresent()) {
-            FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.END_ROD, true, data.origin().x, data.origin().y + 2, data.origin().z, 0f, 0f, 0f, 0f, 25), entity.world);
+            FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.END_ROD, true, data.origin().x, data.origin().y + 2, data.origin().z, 0f, 0.5f, 0f, 0f, 25), entity.world);
         }
 
-        FXUtil.spawnParticles(new FXUtil.ParticlesData<>(InitParticles.CLOCK, true, entity.getPos().x, entity.getPos().y + .5, entity.getPos().z, 0f, 0f, 0f, .15f, 10), entity.world);
+        if (!(entity instanceof ServerPlayerEntity player) || player.interactionManager.getGameMode() != GameMode.SPECTATOR) {
+            FXUtil.spawnParticles(new FXUtil.ParticlesData<>(InitParticles.CLOCK, true, entity.getPos().x, entity.getPos().y + .5, entity.getPos().z, 0f, 0f, 0f, 0f, 3), entity.world);
+        }
     }
 
     @Override
