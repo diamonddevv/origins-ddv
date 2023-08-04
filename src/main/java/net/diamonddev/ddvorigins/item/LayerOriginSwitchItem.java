@@ -7,7 +7,7 @@ import io.github.apace100.origins.origin.OriginLayers;
 import io.github.apace100.origins.registry.ModComponents;
 import net.diamonddev.ddvorigins.nbt.DDVOriginsNbtManager;
 import net.diamonddev.ddvorigins.network.Netcode;
-import net.diamonddev.ddvorigins.network.OpenSelectSpecificLayerOriginScreen;
+import net.diamonddev.ddvorigins.network.SendSelectLayeredOrigin;
 import net.diamonddev.libgenetics.common.api.v1.network.nerve.NerveNetworker;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.resource.language.I18n;
@@ -43,9 +43,9 @@ public class LayerOriginSwitchItem extends Item {
         if (!world.isClient) {
             OriginLayer layer = DDVOriginsNbtManager.LayerComponentManager.getLayer(stack);
             ModComponents.ORIGIN.get(user).setOrigin(layer, Origin.EMPTY);
-            OpenSelectSpecificLayerOriginScreen.Data data = new OpenSelectSpecificLayerOriginScreen.Data();
+            SendSelectLayeredOrigin.Data data = new SendSelectLayeredOrigin.Data();
             data.layerId = layer.getIdentifier();
-            NerveNetworker.send((ServerPlayerEntity) user, Netcode.SELECT_SPECIFIC_LAYER_ORIGIN_PACKET, data);
+            NerveNetworker.send((ServerPlayerEntity) user, Netcode.SEND_SELECT_LAYERED_ORIGIN, data);
 
             if (!user.getAbilities().creativeMode) {
                 stack.decrement(1);

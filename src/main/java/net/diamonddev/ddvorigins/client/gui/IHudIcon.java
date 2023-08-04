@@ -3,9 +3,8 @@ package net.diamonddev.ddvorigins.client.gui;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -13,22 +12,20 @@ import net.minecraft.util.Identifier;
 import java.util.ArrayList;
 import java.util.List;
 
+@FunctionalInterface
 public interface IHudIcon {
 
-    void onRender(MatrixStack matrices, float tickDelta, MinecraftClient client, TextRenderer textRenderer, TextureData data, WindowData window, int x, int y);
+    void onRender(DrawContext context, float tickDelta, MinecraftClient client, TextRenderer textRenderer, TextureData data, WindowData window, int x, int y);
 
-    static void drawTexture(MatrixStack matrices, TextureData data, int x, int y) {
+    static void drawTexture(DrawContext context, TextureData data, int x, int y) {
         if (data != null) {
-            RenderSystem.setShader(GameRenderer::getPositionTexProgram);
-            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-            RenderSystem.setShaderTexture(0, data.path);
-            DrawableHelper.drawTexture(matrices, x, y, data.u, data.v, data.width, data.height, data.sheetWidth, data.sheetHeight);
+            context.drawTexture(data.path, x, y, data.u, data.v, data.width, data.height, data.sheetWidth, data.sheetHeight);
         }
     }
 
-    static void drawTextureWithText(MatrixStack matrices, TextureData data, int x, int y, TextRenderer renderer, Text text, int color) {
-        drawTexture(matrices, data, x, y);
-        if (text != null) DrawableHelper.drawTextWithShadow(matrices, renderer, text, x + data.width + 5, y + (data.height / 4), color);
+    static void drawTextureWithText(DrawContext context, TextureData data, int x, int y, TextRenderer renderer, Text text, int color) {
+        drawTexture(context, data, x, y);
+        if (text != null) context.drawTextWithShadow(renderer, text, x + data.width + 5, y + (data.height / 4), color);
     }
 
     record WindowData(int height, int width) {

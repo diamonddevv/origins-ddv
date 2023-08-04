@@ -25,6 +25,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Position;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.List;
@@ -39,6 +40,7 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
         relocationInstance.before();
         relocationInstance.execute();
     }
+
     public static ActionFactory<Entity> getFactory() {
         return new ActionFactory<>(DDVOrigins.id("vai_atomicrelocate"),
                 new SerializableData()
@@ -85,8 +87,8 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
 
         public void execute() {
             onStep(((vec, blockState, step) -> {
-                BlockPos pos = new BlockPos(vec);
-                FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.ENCHANTED_HIT, true, pos.toCenterPos().getX(), pos.toCenterPos().getY(), pos.toCenterPos().getZ(), 0f, 0f, 0f, 0f, 5), entity.world);
+                BlockPos pos = BlockPos.ofFloored(vec);
+                FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.ENCHANTED_HIT, true, pos.toCenterPos().getX(), pos.toCenterPos().getY(), pos.toCenterPos().getZ(), 0f, 0f, 0f, 0f, 5), entity.getWorld());
 
                 if (shouldCancel(blockState)) {
                     onCancelled(vec);
@@ -99,7 +101,7 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
                 }
 
                 double d = DDVOriginsConfig.SERVER.originConfig.vaiRelocateIntoEntityLeeway;
-                List<Entity> entities = entity.world.getOtherEntities(null, new Box(vec.add(-d,-d,-d), vec.add(d,d,d)), this::shouldHitEntity);
+                List<Entity> entities = entity.getWorld().getOtherEntities(null, new Box(vec.add(-d,-d,-d), vec.add(d,d,d)), this::shouldHitEntity);
                 if (!entities.isEmpty()) {
                     hitsEntity(entities.get(0));
                     return true;
@@ -125,21 +127,24 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
             for(double current = 0; current <= length; current += density) {
                 if (continuing) {
                     Vec3d pos = originPoint.add(direction.multiply(current));
-                    continuing = !performEachStep.accept(pos, entity.world.getBlockState(new BlockPos(pos)), current);
+                    continuing = !performEachStep.accept(pos, entity.getWorld().getBlockState(BlockPos.ofFloored(pos)), current);
                 }
             }
             if (continuing) targetMet = true;
-            performAtEnd.accept(target, entity.world.getBlockState(new BlockPos(target)));
+            performAtEnd.accept(target, entity.getWorld().getBlockState(BlockPos.ofFloored(target)));
         }
 
         private static void teleport(Entity entityToTeleport, boolean upOne, Vec3d coords) {
+            var previousVelocity = entityToTeleport.getVelocity();
             if (!upOne) entityToTeleport.teleport(coords.x, coords.y, coords.z);
             else entityToTeleport.teleport(coords.x, coords.y + 1, coords.z);
+
+            entityToTeleport.setVelocity(previousVelocity); // maintain velocity for funzies
         }
 
         private void hitsEntity(Entity target) {
             teleport(entity, false, target.getPos());
-            target.damage(InitDamageSources.RelocationDamageSource.create(entity), 8f * multiplier);
+            target.damage(InitDamageSources.get(target, InitDamageSources.VAI_RELOCATE, entity, entity), 8f * multiplier);
             after();
         }
         private void hitsBlock(Vec3d target) {
@@ -152,10 +157,10 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
         }
 
         private void onCancelled(Vec3d cancelPos) {
-            FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.ENCHANTED_HIT, true, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 0.1f, 0.1f, 0.1f, 0f, 50), entity.world);
-            FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.CRIT, true, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 0.1f, 0.1f, 0.1f, 0f, 50), entity.world);
-            FXUtil.playSounds(new FXUtil.SoundsData(Registries.SOUND_EVENT.get(new Identifier("minecraft:entity.ender_eye.death")), SoundCategory.MASTER, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 1f, 0.1f), entity.world);
-            FXUtil.playSounds(new FXUtil.SoundsData(Registries.SOUND_EVENT.get(new Identifier("minecraft:entity.ender_eye.death")), SoundCategory.MASTER, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 1f, 2f), entity.world);
+            FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.ENCHANTED_HIT, true, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 0.1f, 0.1f, 0.1f, 0f, 50), entity.getWorld());
+            FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.CRIT, true, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 0.1f, 0.1f, 0.1f, 0f, 50), entity.getWorld());
+            FXUtil.playSounds(new FXUtil.SoundsData(Registries.SOUND_EVENT.get(new Identifier("minecraft:entity.ender_eye.death")), SoundCategory.MASTER, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 1f, 0.1f), entity.getWorld());
+            FXUtil.playSounds(new FXUtil.SoundsData(Registries.SOUND_EVENT.get(new Identifier("minecraft:entity.ender_eye.death")), SoundCategory.MASTER, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 1f, 2f), entity.getWorld());
 
             if (entity instanceof ServerPlayerEntity spe) NerveNetworker.send(spe, Netcode.SEND_HUD_ICON, HudIconPacketData.VAI_RELOCATE_FAILED.create());
         }
@@ -165,13 +170,13 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
                         List.of(
                                 new FXUtil.ParticlesData<>(ParticleTypes.ENCHANTED_HIT, true, entity.getX(), entity.getY(), entity.getZ(), 0.1f, 0.1f, 0.1f, 0.3f, 150),
                                 new FXUtil.ParticlesData<>(ParticleTypes.END_ROD, true, entity.getX(), entity.getY(), entity.getZ(), 0.1f, 0.1f, 0.1f, 0.1f, 50)
-                        ), entity.world);
+                        ), entity.getWorld());
 
                 FXUtil.playSounds(
                         List.of(
                                 new FXUtil.SoundsData(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.MASTER, entity.getX(), entity.getY(), entity.getZ(), 1f, 1.4f),
                                 new FXUtil.SoundsData(SoundEvents.BLOCK_ENDER_CHEST_CLOSE,SoundCategory.MASTER, entity.getX(), entity.getY(), entity.getZ(), 1f, 0.4f)
-                        ), entity.world);
+                        ), entity.getWorld());
 
                 amplifications++;
 
@@ -197,12 +202,12 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
         }
 
         public void before() {
-            FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.ENCHANTED_HIT, true, entity.getX(), entity.getY(), entity.getZ(), 0f, 0.5f, 0f, 0.8f, 100), entity.world);
-            FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.END_ROD, true, entity.getX(), entity.getY(), entity.getZ(), 0f, 0.5f, 0f, 0.1f, 100), entity.world);
-            FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.ENCHANTED_HIT, true, entity.getX(), entity.getY(), entity.getZ(), 0.1f, 0.5f, 0.1f, 0.3f, 100), entity.world);
+            FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.ENCHANTED_HIT, true, entity.getX(), entity.getY(), entity.getZ(), 0f, 0.5f, 0f, 0.8f, 100), entity.getWorld());
+            FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.END_ROD, true, entity.getX(), entity.getY(), entity.getZ(), 0f, 0.5f, 0f, 0.1f, 100), entity.getWorld());
+            FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.ENCHANTED_HIT, true, entity.getX(), entity.getY(), entity.getZ(), 0.1f, 0.5f, 0.1f, 0.3f, 100), entity.getWorld());
         }
         public void after() {
-            FXUtil.playSounds(new FXUtil.SoundsData(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.MASTER, entity.getX(), entity.getY(), entity.getZ(), 1f, 0.8f), entity.world);
+            FXUtil.playSounds(new FXUtil.SoundsData(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.MASTER, entity.getX(), entity.getY(), entity.getZ(), 1f, 0.8f), entity.getWorld());
         }
     }
 }

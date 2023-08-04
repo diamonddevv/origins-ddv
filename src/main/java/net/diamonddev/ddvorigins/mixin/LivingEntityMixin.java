@@ -8,9 +8,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,9 +31,9 @@ public abstract class LivingEntityMixin extends Entity {
 
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
     private void ddvorigins$setDamageTimeWhenChronokinetic(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        if (!(source instanceof InitDamageSources.TimeDamageSource)) {
+        if (!(source.isOf(InitDamageSources.VAI_TIME))) {
             if (this.hasStatusEffect(InitEffects.CHRONOKINETIC)) {
-                this.damage(InitDamageSources.TimeDamageSource.create(source.getAttacker()), amount);
+                this.damage(InitDamageSources.get(this, InitDamageSources.VAI_TIME, null, null), amount);
                 cir.setReturnValue(false);
             }
         }

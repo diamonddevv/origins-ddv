@@ -12,7 +12,7 @@ import net.minecraft.util.Identifier;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OpenSelectSpecificLayerOriginScreen implements NerveS2CPacket<OpenSelectSpecificLayerOriginScreen, OpenSelectSpecificLayerOriginScreen.Data> {
+public class SendSelectLayeredOrigin implements NerveS2CPacket<SendSelectLayeredOrigin, SendSelectLayeredOrigin.Data> {
     @Override
     public ClientPlayNetworking.PlayChannelHandler receive(Identifier channel) {
         return ((client, handler, buf, responseSender) -> {

@@ -4,7 +4,7 @@
     "#ddvorigins:amplifying_blocks",
     "#ddvorigins:cancelling_blocks",
 
-    "#minecraft:replaceable_plants",
+    "#apoli:material/replaceable_plant",
 
     "minecraft:air",
     "minecraft:glass",

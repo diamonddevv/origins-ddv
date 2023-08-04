@@ -1,6 +1,8 @@
 package net.diamonddev.ddvorigins.util;
 
 import net.diamonddev.libgenetics.common.api.v1.config.chromosome.ChromosomeConfigFile;
+import net.diamonddev.libgenetics.common.api.v1.config.chromosome.serializer.ConfigSerializer;
+import net.diamonddev.libgenetics.common.api.v1.config.chromosome.serializer.JsonConfigSerializer;
 
 
 public class DDVOriginsConfig {
@@ -11,6 +13,11 @@ public class DDVOriginsConfig {
         @Override
         public String getFilePathFromConfigDirectory() {
             return ".diamonddev/ddvorigins/server.json";
+        }
+
+        @Override
+        public ConfigSerializer getSerializer() {
+            return new JsonConfigSerializer();
         }
 
         public ModCfg modConfig = new ModCfg();
@@ -30,6 +37,11 @@ public class DDVOriginsConfig {
         @Override
         public String getFilePathFromConfigDirectory() {
             return ".diamonddev/ddvorigins/client.json";
+        }
+
+        @Override
+        public ConfigSerializer getSerializer() {
+            return new JsonConfigSerializer();
         }
 
         public GuiCfg guiConfig = new GuiCfg();
