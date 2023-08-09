@@ -1,18 +1,27 @@
 package net.diamonddev.ddvorigins.impl;
 
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import io.github.apace100.origins.command.LayerArgumentType;
 import io.github.apace100.origins.origin.OriginLayer;
+import net.diamonddev.ddvorigins.client.gui.IHudIcon;
 import net.diamonddev.ddvorigins.item.LayerOriginSwitchItem;
+import net.diamonddev.ddvorigins.network.Netcode;
+import net.diamonddev.ddvorigins.network.SendHudIcon;
 import net.diamonddev.ddvorigins.registry.InitItems;
 import net.diamonddev.libgenetics.common.api.LibGeneticsApi;
+import net.diamonddev.libgenetics.common.api.v1.network.nerve.NerveNetworker;
+import net.minecraft.command.argument.ColorArgumentType;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.Collection;

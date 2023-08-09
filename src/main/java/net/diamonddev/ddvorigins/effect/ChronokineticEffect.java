@@ -3,9 +3,8 @@ package net.diamonddev.ddvorigins.effect;
 import net.diamonddev.ddvorigins.cca.ChronokinesisComponent;
 import net.diamonddev.ddvorigins.impl.CCAEntityInitializerImpl;
 import net.diamonddev.ddvorigins.network.Netcode;
-import net.diamonddev.ddvorigins.network.SendParticle;
-import net.diamonddev.ddvorigins.registry.InitParticles;
-import net.diamonddev.ddvorigins.util.FXUtil;
+import net.diamonddev.ddvorigins.network.SendChronokineticUserData;
+import net.diamonddev.ddvorigins.registry.InitEffects;
 import net.diamonddev.libgenetics.common.api.v1.network.nerve.NerveNetworker;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.AttributeContainer;
@@ -13,12 +12,8 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectCategory;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.GameMode;
 
 import java.util.function.Consumer;
 
@@ -35,23 +30,6 @@ public class ChronokineticEffect extends StatusEffect {
         this.addAttributeModifier(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, MathHelper.randomUuid().toString(), FACTOR, EntityAttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 
-
-
-
-    public static void tick(LivingEntity entity) {
-        ChronokinesisComponent.ChronokinesisComponentData data = CCAEntityInitializerImpl.ChronokinesisManager.get(entity);
-        if (data.allPresent()) {
-            if (entity.getWorld().getServer() != null) {
-                var pdata = new FXUtil.ParticlesData<>(ParticleTypes.END_ROD, true, data.origin().x, data.origin().y + 2, data.origin().z, 0f, 0.25f, 0f, 0f, 20);
-                entity.getWorld().getServer().getPlayerManager().getPlayerList().forEach((p) -> NerveNetworker.send(p, Netcode.SEND_PARTICLE, new SendParticle.Data(pdata)));
-            }
-        }
-
-        if (!(entity instanceof ServerPlayerEntity player) || player.interactionManager.getGameMode() != GameMode.SPECTATOR) {
-            FXUtil.spawnParticles(new FXUtil.ParticlesData<>(InitParticles.CLOCK, true, entity.getPos().x, entity.getPos().y + .5, entity.getPos().z, 0f, 0f, 0f, 0f, 2), entity.getWorld());
-        }
-    }
-
     @Override
     public void onApplied(LivingEntity entity, AttributeContainer attributes, int amplifier) {
         super.onApplied(entity, attributes, amplifier);
@@ -59,26 +37,34 @@ public class ChronokineticEffect extends StatusEffect {
         Vec3d origin = entity.getPos();
         ChronokinesisComponent.ChronokinesisComponentData data = new ChronokinesisComponent.ChronokinesisComponentData(origin);
         CCAEntityInitializerImpl.ChronokinesisManager.set(entity, data);
+
+        if (entity.getWorld().getServer() != null) {
+            var instance = entity.getStatusEffect(InitEffects.CHRONOKINETIC);
+            if (instance != null) {
+                int duration = instance.getDuration();
+
+                entity.getWorld().getServer().getPlayerManager().getPlayerList().forEach((p) ->
+                        NerveNetworker.send(p, Netcode.SEND_CHRONOKINETIC_USER_DATA,
+                                new SendChronokineticUserData.ChronokineticUserData(true, data.origin(), duration, entity.getUuid())));
+            }
+        }
     }
 
     @Override
     public void onRemoved(LivingEntity entity, AttributeContainer attributes, int amplifier) {
         super.onRemoved(entity, attributes, amplifier);
         ChronokinesisComponent.ChronokinesisComponentData data = CCAEntityInitializerImpl.ChronokinesisManager.get(entity);
-        if (data.allPresent()) {
-            if (entity.getWorld().getServer() != null) {
-                rayFromEndToOrigin(data.origin().add(0, .5, 0), entity.getPos().add(0, .5, 0), (vec) -> {
-                    BlockPos pos = BlockPos.ofFloored(vec);
-                    var pdata = new FXUtil.ParticlesData<>(ParticleTypes.ENCHANTED_HIT, true, pos.toCenterPos().getX(), pos.toCenterPos().getY(), pos.toCenterPos().getZ(), 0f, 0f, 0f, 0f, 5);
-                    entity.getWorld().getServer().getPlayerManager().getPlayerList().forEach((p) -> NerveNetworker.send(p, Netcode.SEND_PARTICLE, new SendParticle.Data(pdata)));
-                });
-            }
-            entity.teleport(data.origin().x, data.origin().y, data.origin().z);
-        }
+        if (data.allPresent()) entity.teleport(data.origin().x, data.origin().y, data.origin().z);
+
+        if (entity.getWorld().getServer() != null) entity.getWorld().getServer().getPlayerManager().getPlayerList().forEach(p -> {
+            NerveNetworker.send(p, Netcode.SEND_CHRONOKINETIC_USER_DATA,
+                    new SendChronokineticUserData.ChronokineticUserData(false, data.origin(), 0, entity.getUuid()));
+        });
+
         CCAEntityInitializerImpl.ChronokinesisManager.reset(entity);
     }
 
-    private static void rayFromEndToOrigin(Vec3d origin, Vec3d end, Consumer<Vec3d> step) {
+    public static void rayFromEndToOrigin(Vec3d origin, Vec3d end, Consumer<Vec3d> step) {
         Vec3d direction = origin.subtract(end).normalize();
         double length = end.distanceTo(origin);
         for(double current = 0; current <= length; current += .125) {

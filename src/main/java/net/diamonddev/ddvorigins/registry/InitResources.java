@@ -8,14 +8,14 @@ import net.diamonddev.libgenetics.common.api.v1.interfaces.RegistryInitializer;
 public class InitResources implements RegistryInitializer {
 
     // LISTENERS
-    public static final ResourceListener ROOT_RESOURCE_LISTENER = new ResourceListener();
+    public static final ResourceListener DDVORIGINS_LISTENER = new ResourceListener();
 
     // TYPES
     public static final WeightedLayersType WEIGHTED_LAYERS_TYPE = new WeightedLayersType();
 
     @Override
     public void register() {
-        CognitionRegistry.registerListener(ROOT_RESOURCE_LISTENER);
-        ROOT_RESOURCE_LISTENER.getManager().registerType(WEIGHTED_LAYERS_TYPE);
+        CognitionRegistry.registerListener(DDVORIGINS_LISTENER);
+        DDVORIGINS_LISTENER.getManager().registerType(WEIGHTED_LAYERS_TYPE);
     }
 }

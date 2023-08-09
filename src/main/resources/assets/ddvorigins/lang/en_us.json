@@ -22,5 +22,10 @@
   "power.ddvorigins.vai/unnatural.description": "The forces of nature are against you, hunting you down before you cause any damage to the world. As such, you can only rest when deep underground.",
   "ddvorigins.vai.cant_sleep": "Its too dangerous to rest here..",
   "power.ddvorigins.vai/halfsoul.name": "Half-Soul",
-  "power.ddvorigins.vai/halfsoul.description": "Due to unnatural occurrences within your biological system, you have half your max health."
+  "power.ddvorigins.vai/halfsoul.description": "Due to unnatural occurrences within your biological system, you have half your max health.",
+
+  "origin.ddvorigins.skykin.name": "Skykin",
+  "origin.ddvorigins.skykin.description": "Born of the skies and evolved from birds, the Skykin race has never been able to live on the ground.",
+  "power.ddvorigins.skykin/airswim.name": "Skystroke",
+  "power.ddvorigins.skykin/airswim.description": "You use the winds to swim through the air."
 }

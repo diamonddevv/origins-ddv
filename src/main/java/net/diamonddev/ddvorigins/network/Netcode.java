@@ -12,7 +12,7 @@ public class Netcode {
             SEND_HUD_ICON = NervePacketRegistry.register(
                     DDVOrigins.id("send_hud_icon"), new SendHudIcon());
 
-    public static final NervePacketRegistry.NervePacketRegistryEntry<SendParticle, SendParticle.Data>
-            SEND_PARTICLE = NervePacketRegistry.register(
-                    DDVOrigins.id("send_particle"), new SendParticle());
+    public static final NervePacketRegistry.NervePacketRegistryEntry<SendChronokineticUserData, SendChronokineticUserData.ChronokineticUserData>
+            SEND_CHRONOKINETIC_USER_DATA = NervePacketRegistry.register(
+                    DDVOrigins.id("send_chronokinetic_user_data"), new SendChronokineticUserData());
 }

@@ -1,4 +1,4 @@
-package net.diamonddev.ddvorigins.power.action.entity.vai;
+package net.diamonddev.ddvorigins.power.action.entity;
 
 import io.github.apace100.apoli.power.factory.action.ActionFactory;
 import io.github.apace100.calio.data.SerializableData;
@@ -25,18 +25,17 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Position;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.List;
 import java.util.function.BiConsumer;
 
-public class VaiRelocateEntityAction { // alot of the code for this was taken from the raycast code so yeah
+public class AtomicRelocateEntityAction { // alot of the code for this was taken from the raycast code so yeah
 
     private static void action(SerializableData.Instance data, Entity entity) {
         Vec3d originPoint = entity.getEyePos();
         int i = entity instanceof LivingEntity living && living.hasStatusEffect(InitEffects.CHRONOKINETIC) ? 2 : 1;
-        VaiRelocationInstance relocationInstance = new VaiRelocationInstance(data, entity, originPoint, data.getDouble("distance"), data.getInt("max_amplifies"), i);
+        VaiRelocationInstance relocationInstance = new VaiRelocationInstance(data, entity, originPoint, data.getDouble("distance"), data.getInt("max_amplifies"), i, VaiRelocationInstance.getEntityRotvec(entity));
         relocationInstance.before();
         relocationInstance.execute();
     }
@@ -47,7 +46,7 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
                         .add("distance", SerializableDataTypes.DOUBLE)
                         .add("amplify_distance", SerializableDataTypes.DOUBLE)
                         .add("max_amplifies", SerializableDataTypes.INT),
-                VaiRelocateEntityAction::action
+                AtomicRelocateEntityAction::action
         );
     }
 
@@ -68,7 +67,7 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
 
         private int amplifications = 0;
 
-        public VaiRelocationInstance(SerializableData.Instance data, Entity entity, Vec3d originPoint, double distance, int maxAmplifies, int multiplier) {
+        public VaiRelocationInstance(SerializableData.Instance data, Entity entity, Vec3d originPoint, double distance, int maxAmplifies, int multiplier, Vec3d rotVec) {
             this.data = data;
             this.entity = entity;
 
@@ -78,17 +77,20 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
             this.density = DDVOriginsConfig.SERVER.originConfig.vaiRelocationLogicDensity;
 
             this.originPoint = originPoint;
-            this.rotVec = entity.getRotationVec(1);
+            this.rotVec = rotVec;
             this.target = originPoint.add(rotVec.multiply(distance * multiplier));
 
             this.continuing = true;
             this.targetMet = false;
         }
 
+        private static Vec3d getEntityRotvec(Entity entity) {
+            return entity.getRotationVec(1);
+        }
+
         public void execute() {
             onStep(((vec, blockState, step) -> {
-                BlockPos pos = BlockPos.ofFloored(vec);
-                FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.ENCHANTED_HIT, true, pos.toCenterPos().getX(), pos.toCenterPos().getY(), pos.toCenterPos().getZ(), 0f, 0f, 0f, 0f, 5), entity.getWorld());
+                FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.ENCHANTED_HIT, true, vec.x, vec.y, vec.z, 0f, 0f, 0f, 0f, 5), entity.getWorld());
 
                 if (shouldCancel(blockState)) {
                     onCancelled(vec);
@@ -135,11 +137,8 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
         }
 
         private static void teleport(Entity entityToTeleport, boolean upOne, Vec3d coords) {
-            var previousVelocity = entityToTeleport.getVelocity();
             if (!upOne) entityToTeleport.teleport(coords.x, coords.y, coords.z);
             else entityToTeleport.teleport(coords.x, coords.y + 1, coords.z);
-
-            entityToTeleport.setVelocity(previousVelocity); // maintain velocity for funzies
         }
 
         private void hitsEntity(Entity target) {
@@ -182,7 +181,7 @@ public class VaiRelocateEntityAction { // alot of the code for this was taken fr
 
                 var next = new VaiRelocationInstance(data, entity,
                         amplificationPos.add(rotVec.multiply(1.5)),
-                        data.getDouble("amplify_distance"), maxAmplifies - 1, this.multiplier);
+                        data.getDouble("amplify_distance"), maxAmplifies - 1, this.multiplier, getEntityRotvec(entity));
                 next.execute();
             }
         }

@@ -1,0 +1,11 @@
+{
+  "powers": [
+    "ddvorigins:skykin/prevent_elytra",
+    "ddvorigins:skykin/aerial_affinity",
+
+    "ddvorigins:skykin/airswim"
+  ],
+  "icon": "minecraft:white_dye",
+  "order": 10,
+  "impact": 2
+}
