@@ -15,9 +15,13 @@ public class PlayerEntityMixin {
             method = "getBlockBreakingSpeed",
             at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;isOnGround()Z")
     )
-    private boolean ddvorigins$applyAerialAffinity(PlayerEntity player, Operation<Boolean> op) {
-        if (PowerHolderComponent.hasPower(player, AerialAffinityPower.class)) {
-            return false;
-        } else return op.call(player);
+    private boolean ddvorigins$applyAerialAffinity(PlayerEntity entity, Operation<Boolean> op) {
+        if (!op.call(entity)) {
+            if (PowerHolderComponent.hasPower(entity, AerialAffinityPower.class)) {
+                return true;
+            }
+        }
+
+        return op.call(entity);
     }
 }

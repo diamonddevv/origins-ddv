@@ -1,0 +1,9 @@
+{
+  "type": "apoli:modify_swim_speed",
+  "modifier": {
+    "name": "Fast Swim Speeds",
+    "operation": "multiply_total",
+    "value": 2
+  },
+  "hidden": true
+}

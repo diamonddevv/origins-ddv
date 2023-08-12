@@ -1,0 +1,9 @@
+{
+  "type": "ddvorigins:prevent_water_ambience",
+  "condition": {
+    "type": "apoli:submerged_in",
+    "fluid": "minecraft:water",
+    "inverted": true
+  },
+  "hidden": true
+}

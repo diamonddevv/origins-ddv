@@ -8,6 +8,7 @@ import net.diamonddev.ddvorigins.network.HudIconPacketData;
 import net.diamonddev.ddvorigins.network.Netcode;
 import net.diamonddev.ddvorigins.registry.InitDamageSources;
 import net.diamonddev.ddvorigins.registry.InitEffects;
+import net.diamonddev.ddvorigins.registry.InitSoundEvents;
 import net.diamonddev.ddvorigins.util.DDVOriginsConfig;
 import net.diamonddev.ddvorigins.util.FXUtil;
 import net.diamonddev.ddvorigins.util.TriFunction;
@@ -158,8 +159,8 @@ public class AtomicRelocateEntityAction { // alot of the code for this was taken
         private void onCancelled(Vec3d cancelPos) {
             FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.ENCHANTED_HIT, true, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 0.1f, 0.1f, 0.1f, 0f, 50), entity.getWorld());
             FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.CRIT, true, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 0.1f, 0.1f, 0.1f, 0f, 50), entity.getWorld());
-            FXUtil.playSounds(new FXUtil.SoundsData(Registries.SOUND_EVENT.get(new Identifier("minecraft:entity.ender_eye.death")), SoundCategory.MASTER, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 1f, 0.1f), entity.getWorld());
-            FXUtil.playSounds(new FXUtil.SoundsData(Registries.SOUND_EVENT.get(new Identifier("minecraft:entity.ender_eye.death")), SoundCategory.MASTER, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 1f, 2f), entity.getWorld());
+
+            FXUtil.playSounds(new FXUtil.SoundsData(InitSoundEvents.VAI_RELOCATE_CANCEL, SoundCategory.MASTER, cancelPos.getX(), cancelPos.getY(), cancelPos.getZ(), 1f, 1f), entity.getWorld());
 
             if (entity instanceof ServerPlayerEntity spe) NerveNetworker.send(spe, Netcode.SEND_HUD_ICON, HudIconPacketData.VAI_RELOCATE_FAILED.create());
         }
@@ -172,10 +173,8 @@ public class AtomicRelocateEntityAction { // alot of the code for this was taken
                         ), entity.getWorld());
 
                 FXUtil.playSounds(
-                        List.of(
-                                new FXUtil.SoundsData(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.MASTER, entity.getX(), entity.getY(), entity.getZ(), 1f, 1.4f),
-                                new FXUtil.SoundsData(SoundEvents.BLOCK_ENDER_CHEST_CLOSE,SoundCategory.MASTER, entity.getX(), entity.getY(), entity.getZ(), 1f, 0.4f)
-                        ), entity.getWorld());
+                        new FXUtil.SoundsData(InitSoundEvents.VAI_RELOCATE_AMPLIFY, SoundCategory.MASTER, entity.getX(), entity.getY(), entity.getZ(), 1f, 1f),
+                        entity.getWorld());
 
                 amplifications++;
 
@@ -206,7 +205,7 @@ public class AtomicRelocateEntityAction { // alot of the code for this was taken
             FXUtil.spawnParticles(new FXUtil.ParticlesData<>(ParticleTypes.ENCHANTED_HIT, true, entity.getX(), entity.getY(), entity.getZ(), 0.1f, 0.5f, 0.1f, 0.3f, 100), entity.getWorld());
         }
         public void after() {
-            FXUtil.playSounds(new FXUtil.SoundsData(SoundEvents.ITEM_CHORUS_FRUIT_TELEPORT, SoundCategory.MASTER, entity.getX(), entity.getY(), entity.getZ(), 1f, 0.8f), entity.getWorld());
+            FXUtil.playSounds(new FXUtil.SoundsData(InitSoundEvents.VAI_RELOCATE_END, SoundCategory.MASTER, entity.getX(), entity.getY(), entity.getZ(), 1f, 1f), entity.getWorld());
         }
     }
 }

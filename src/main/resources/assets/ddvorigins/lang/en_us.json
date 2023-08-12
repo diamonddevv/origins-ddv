@@ -27,5 +27,7 @@
   "origin.ddvorigins.skykin.name": "Skykin",
   "origin.ddvorigins.skykin.description": "Born of the skies and evolved from birds, the Skykin race has never been able to live on the ground.",
   "power.ddvorigins.skykin/airswim.name": "Skystroke",
-  "power.ddvorigins.skykin/airswim.description": "You use the winds to swim through the air."
+  "power.ddvorigins.skykin/airswim.description": "You use the winds to swim through the air.",
+  "power.ddvorigins.skykin/hover.name": "Lighter than Air",
+  "power.ddvorigins.skykin/hover.description": "You hover in the air instead of falling."
 }

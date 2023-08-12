@@ -1,6 +1,5 @@
 package net.diamonddev.ddvorigins.mixin;
 
-import net.diamonddev.ddvorigins.DDVOrigins;
 import net.diamonddev.ddvorigins.DDVOriginsClient;
 import net.diamonddev.ddvorigins.effect.ChronokineticEffect;
 import net.diamonddev.ddvorigins.registry.InitParticles;
@@ -23,12 +22,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class MinecraftClientMixin {
     @Shadow @Nullable public ClientWorld world;
 
+    @Shadow public abstract boolean isPaused();
+
     @Inject(method = "tick", at = @At("TAIL"))
     private void ddvorigins$tickClientThings(CallbackInfo ci) {
         DDVOriginsClient.CHRONOKINETICS.removeIf(DDVOriginsClient.ReceivedChronokineticData::shouldRemove);
 
         for (var data : DDVOriginsClient.CHRONOKINETICS) {
-            if (this.world != null) {
+            if (this.world != null && !this.isPaused()) {
                 // Clocks (Trail)
                 Entity user = data.user;
 

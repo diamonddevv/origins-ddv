@@ -9,7 +9,8 @@ import net.diamonddev.ddvorigins.DDVOrigins;
 import net.diamonddev.ddvorigins.power.action.entity.SendHudIconEntityAction;
 import net.diamonddev.ddvorigins.power.action.entity.AtomicRelocateEntityAction;
 import net.diamonddev.ddvorigins.power.type.AerialAffinityPower;
-import net.diamonddev.ddvorigins.power.type.PreventFallFlyingPower;
+import net.diamonddev.ddvorigins.power.type.ConstantStandardVelocityModifierPower;
+import net.diamonddev.ddvorigins.power.type.PreventWaterAmbientSoundsPower;
 import net.diamonddev.libgenetics.common.api.v1.interfaces.RegistryInitializer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -19,8 +20,9 @@ public class InitPowers implements RegistryInitializer {
     @Override
     public void register() {
         // Powers
-        registerPower(PreventFallFlyingPower.getFactory());
         registerPower(AerialAffinityPower.getFactory());
+        registerPower(ConstantStandardVelocityModifierPower.getFactory());
+        registerPower(PreventWaterAmbientSoundsPower.getFactory());
 
         // Actions
         registerEntityAction(AtomicRelocateEntityAction.getFactory());

@@ -40,6 +40,7 @@ public class DDVOrigins implements ModInitializer {
 		new InitPowers().register();
 		new InitDamageSources().register();
 		new InitEventCallbacks().register();
+		new InitSoundEvents().register();
 
 		TradeOfferHelper.registerWanderingTraderOffers(1, factories -> {
 			if (DDVOriginsConfig.SERVER.modConfig.canObtainLayeredOrbs) {

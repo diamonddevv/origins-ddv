@@ -15,7 +15,7 @@ import java.util.function.Function;
 public class ResourceListener extends CognitionDataListener {
 
     public ResourceListener() {
-        super("DDV Origins Resources", DDVOrigins.id("data"), "ddvorigins", ResourceType.SERVER_DATA);
+        super("DDV Origins Resources", DDVOrigins.id("ddvo_data"), "ddvo", ResourceType.SERVER_DATA);
     }
 
     @Override

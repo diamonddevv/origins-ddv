@@ -6,15 +6,13 @@ import io.github.apace100.apoli.power.factory.PowerFactory;
 import net.diamonddev.ddvorigins.DDVOrigins;
 import net.minecraft.entity.LivingEntity;
 
-public class AerialAffinityPower extends Power {
-
-    public AerialAffinityPower(PowerType<?> type, LivingEntity entity) {
+public class PreventWaterAmbientSoundsPower extends Power {
+    public PreventWaterAmbientSoundsPower(PowerType<?> type, LivingEntity entity) {
         super(type, entity);
     }
 
     @SuppressWarnings("unchecked")
     public static PowerFactory<AerialAffinityPower> getFactory() {
-        return Power.createSimpleFactory(AerialAffinityPower::new, DDVOrigins.id("aerial_affinity"));
+        return Power.createSimpleFactory(PreventWaterAmbientSoundsPower::new, DDVOrigins.id("prevent_water_ambience"));
     }
-
 }

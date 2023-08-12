@@ -1,0 +1,46 @@
+{
+  "vai.chronokinesis.origin": {
+    "subtitle": "subtitle.ddvorigins.vai.chronokinesis.origin",
+    "sounds": [
+      "ddvorigins:vai/chronokinesis/origin"
+    ]
+  },
+  "vai.chronokinesis.end": {
+    "subtitle": "subtitle.ddvorigins.chronokinesis.end",
+    "sounds": [
+      "ddvorigins:vai/chronokinesis/end"
+    ]
+  },
+  "vai.relocate.origin": {
+    "subtitle": "subtitle.ddvorigins.relocate.origin",
+    "sounds": [
+      "ddvorigins:vai/relocate/origin"
+    ]
+  },
+  "vai.relocate.end": {
+    "subtitle": "subtitle.ddvorigins.relocate.end",
+    "sounds": [
+      "ddvorigins:vai/relocate/end"
+    ]
+  },
+  "vai.relocate.amplify": {
+    "subtitle": "subtitle.ddvorigins.relocate.amplify",
+    "sounds": [
+      "ddvorigins:vai/relocate/amplify"
+    ]
+  },
+  "vai.relocate.cancel": {
+    "subtitle": "subtitle.ddvorigins.relocate.cancel",
+    "sounds": [
+      "ddvorigins:vai/relocate/cancel"
+    ]
+  },
+
+
+  "skykin.fly": {
+    "subtitle": "subtitle.ddvorigins.skykin.fly",
+    "sounds": [
+      "ddvorigins:skykin/fly"
+    ]
+  }
+}

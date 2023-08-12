@@ -2,8 +2,12 @@
   "powers": [
     "ddvorigins:skykin/prevent_elytra",
     "ddvorigins:skykin/aerial_affinity",
+    "ddvorigins:skykin/no_water_sounds",
+    "ddvorigins:skykin/swim_speed",
+    "ddvorigins:skykin/swim_sound",
 
-    "ddvorigins:skykin/airswim"
+    "ddvorigins:skykin/airswim",
+    "ddvorigins:skykin/hover"
   ],
   "icon": "minecraft:white_dye",
   "order": 10,
