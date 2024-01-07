@@ -13,5 +13,36 @@
   },
   "key": {
     "key": "key.origins.primary_active"
-  }
+  },
+
+  "badges": [
+    {
+      "type": "ddvorigins:block_tag",
+      "text": {
+        "translate": "ddvorigins.relocation_badge.amplify"
+      },
+      "sprite": "ddvorigins:textures/gui/badge/amplification.png",
+      "tag": "ddvorigins:amplifying_blocks"
+    },
+    {
+      "type": "ddvorigins:block_tag",
+      "text": {
+        "translate": "ddvorigins.relocation_badge.cancel"
+      },
+      "sprite": "ddvorigins:textures/gui/badge/cancellation.png",
+      "tag": "ddvorigins:cancelling_blocks"
+    },
+    {
+      "type": "ddvorigins:block_tag",
+      "text": {
+        "translate": "ddvorigins.relocation_badge.ignore"
+      },
+      "sprite": "ddvorigins:textures/gui/badge/ignoration.png",
+      "tag": "ddvorigins:ignored_blocks",
+      "except": [
+        "ddvorigins:amplifying_blocks",
+        "ddvorigins:cancelling_blocks"
+      ]
+    }
+  ]
 }

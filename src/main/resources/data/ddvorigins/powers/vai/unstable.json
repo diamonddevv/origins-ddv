@@ -1,0 +1,9 @@
+{
+    "type": "origins:action_when_damage_taken",
+    "entity_action": {
+        "type": "ddvorigins:chorus_warp",
+        "radius": 12,
+        "keep_safe": false,
+        "damage_based_chance": true
+    }
+}

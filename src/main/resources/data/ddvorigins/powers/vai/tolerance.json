@@ -1,0 +1,24 @@
+{
+    "type": "origins:action_when_damage_taken",
+    "damage_condition": {
+        "type": "origins:attacker",
+        "entity_condition": {
+            "type": "ddvorigins:is_living"
+        }
+    },
+    "entity_action": {
+        "type": "origins:and",
+        "actions": [
+            {
+                "type": "ddvorigins:add_cooldown_unbound",
+                "add": 50,
+                "resource": "ddvorigins:vai/atomrelocate"
+            },
+            {
+                "type": "ddvorigins:add_cooldown_unbound",
+                "add": 200,
+                "resource": "ddvorigins:vai/chronokinesis"
+            }
+        ]
+    }
+}

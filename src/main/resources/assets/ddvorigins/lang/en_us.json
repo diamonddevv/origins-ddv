@@ -5,29 +5,52 @@
   "ddvorigins.tooltip.layer": "§7Layer:§r %s",
 
   "origin.ddvorigins.vai.name": "Vai",
-  "origin.ddvorigins.vai.description": "The Vai Race is one of mystery. They bear incredibly strong minds, bending the known logics of physics.",
-  "power.ddvorigins.vai/vaision.name": "Vaision",
-  "power.ddvorigins.vai/vaision.description": "Your intrepid sense of vision allows you to see weaker entities through walls, by highlighting them with a glow only visible to you.",
+  "origin.ddvorigins.vai.description": "The Vai are an enigmatic species, bearing capability beyond what the known laws of physics govern - albeit at the cost of paranoia.",
+
   "power.ddvorigins.vai/atomrelocate.name": "Atomic Relocation",
-  "power.ddvorigins.vai/atomrelocate.description": "You can relocate your body particles to a location ahead of you.",
+  "power.ddvorigins.vai/atomrelocate.description": "You can relocate your body particles to a location ahead of you. Some blocks produce unique results with this power.",
   "death.attack.vai_relocated_into": "%s was torn apart by a Vai relocating into them",
   "death.attack.vai_relocated_into.player": "%s was torn apart by %s relocating into them",
+  "death.attack.vai_relocate_cancel": "%s was ripped apart by bad relocation",
   "text.ddvorigins.vai.relocate_cancelled": "Can't relocate here!",
+  "subtitle.ddvorigins.relocate.amplify": "Vai amplifies relocation",
+  "subtitle.ddvorigins.relocate.cancel": "Vai relocation cancels",
+  "subtitle.ddvorigins.relocate.end": "Vai relocates",
+  "ddvorigins.relocation_badge.amplify": "Amplification: These blocks extend the distance of the power when relocated through.\n",
+  "ddvorigins.relocation_badge.cancel": "Cancellation: These blocks cancel a relocation, damaging the user when attempted to teleport against.\n",
+  "ddvorigins.relocation_badge.ignore": "Ignoration: These blocks are ignored by relocation.\n",
+
   "power.ddvorigins.vai/chronokinesis.name": "Chronokinesis",
   "power.ddvorigins.vai/chronokinesis.description": "You bend spacetime, creating a loop that gives you immense strength for a limited time, before warping you back to the start of your loop.",
   "effect.ddvorigins.chronokinetic": "Chronokinetic",
   "death.attack.vai_time": "Time was not so kind to %s",
   "death.attack.vai_time.entity": "Time was not so kind to %s after being attacked by %s",
-  "power.ddvorigins.vai/unnatural.name": "Unnaturality",
-  "power.ddvorigins.vai/unnatural.description": "The forces of nature are against you, hunting you down before you cause any damage to the world. As such, you can only rest when deep underground.",
-  "ddvorigins.vai.cant_sleep": "Its too dangerous to rest here..",
+
+  "power.ddvorigins.vai/vaision.name": "Vaision",
+  "power.ddvorigins.vai/vaision.description": "Your intrepid sense of vision allows you to see weak entities through walls.",
+
+  "power.ddvorigins.vai/unnatural.name": "Nature's Nemesis",
+  "power.ddvorigins.vai/unnatural.description": "You believe forces of nature are against you, hunting you down before you cause any damage to the world. As such, you can only rest when deep underground.",
+  "ddvorigins.vai.cant_sleep": "I can't rest here, they'll get me. I should head deeper underground..",
+
   "power.ddvorigins.vai/halfsoul.name": "Half-Soul",
-  "power.ddvorigins.vai/halfsoul.description": "Due to unnatural occurrences within your biological system, you have half your max health.",
+  "power.ddvorigins.vai/halfsoul.description": "Due to unnatural occurrences within your biology, you have half your max health.",
+
+  "power.ddvorigins.vai/unstable.name": "Unstable Power",
+  "power.ddvorigins.vai/unstable.description": "Your power is unstable, and sometimes being hurt can cause you to relocate around sporadically.",
+
+  "power.ddvorigins.vai/tolerance.name": "Pain Tolerance",
+  "power.ddvorigins.vai/tolerance.description": "In the a pinch, you handle inflicted pain at the cost of longer cooldown on your spacial and temporal powers.",
+
+
 
   "origin.ddvorigins.skykin.name": "Skykin",
   "origin.ddvorigins.skykin.description": "Born of the skies and evolved from birds, the Skykin race has never been able to live on the ground.",
+
   "power.ddvorigins.skykin/airswim.name": "Skystroke",
   "power.ddvorigins.skykin/airswim.description": "You use the winds to swim through the air.",
+
   "power.ddvorigins.skykin/hover.name": "Lighter than Air",
   "power.ddvorigins.skykin/hover.description": "You hover in the air instead of falling."
+
 }

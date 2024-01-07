@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "DDV Origins",
-  "description": "Origins Side Mod by DiamondDev, adding some origins and some utility things.",
+  "description": "Adding some origins and some utility things.\n\nOrigins Added:\nVai\n\nPackage for Debugging: 'dev.diamond.ddvorigins'",
   "authors": [
     "DiamondDev"
   ],
@@ -19,16 +19,16 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.diamonddev.ddvorigins.DDVOrigins"
+      "dev.diamond.ddvorigins.DDVOrigins"
     ],
     "client": [
-      "net.diamonddev.ddvorigins.DDVOriginsClient"
+      "dev.diamond.ddvorigins.DDVOriginsClient"
     ],
     "libgenetics": [
-      "net.diamonddev.ddvorigins.impl.LibGeneticsApiImpl"
+      "dev.diamond.ddvorigins.impl.LibGeneticsApiImpl"
     ],
     "cardinal-components-entity": [
-      "net.diamonddev.ddvorigins.impl.CCAEntityInitializerImpl"
+      "dev.diamond.ddvorigins.impl.CCAEntityInitializerImpl"
     ]
   },
   "mixins": [
@@ -46,6 +46,8 @@
       "ddvorigins:chronokinesis"
     ]
   },
+
+  "accessWidener": "ddvorigins.accesswidener",
 
   "depends": {
     "fabricloader": ">=0.14.6",

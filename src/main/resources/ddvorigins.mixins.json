@@ -1,19 +1,20 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "net.diamonddev.ddvorigins.mixin",
-  "compatibilityLevel": "JAVA_17",
-  "mixins": [
-    "AmbientSoundPlayerMixin",
-    "LivingEntityMixin",
-    "PlayerEntityMixin"
-  ],
-  "client": [
-    "ClientPlayerEntityMixin",
-    "InGameHudMixin",
-    "MinecraftClientMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
+    "required": true,
+    "minVersion": "0.8",
+    "package": "dev.diamond.ddvorigins.mixin",
+    "compatibilityLevel": "JAVA_17",
+    "mixins": [
+        "AmbientSoundPlayerMixin",
+        "CooldownPowerAccessor",
+        "LivingEntityMixin",
+        "PlayerEntityMixin"
+    ],
+    "client": [
+        "ClientPlayerEntityMixin",
+        "InGameHudMixin",
+        "MinecraftClientMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
   }
 }

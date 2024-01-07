@@ -1,10 +1,13 @@
 {
   "powers": [
-    "ddvorigins:vai/vaision",
     "ddvorigins:vai/atomrelocate",
     "ddvorigins:vai/chronokinesis",
+    "ddvorigins:vai/vaision",
+
     "ddvorigins:vai/unnatural",
-    "ddvorigins:vai/halfsoul"
+    "ddvorigins:vai/halfsoul",
+    "ddvorigins:vai/unstable",
+    "ddvorigins:vai/tolerance"
   ],
   "icon": {
     "item": "minecraft:spectral_arrow",
