@@ -51,6 +51,34 @@
   "power.ddvorigins.skykin/airswim.description": "You use the winds to swim through the air.",
 
   "power.ddvorigins.skykin/hover.name": "Lighter than Air",
-  "power.ddvorigins.skykin/hover.description": "You hover in the air instead of falling."
+  "power.ddvorigins.skykin/hover.description": "You hover in the air instead of falling.",
 
+
+  "origin.ddvorigins.voidbringer.name": "Voidbringer",
+  "origin.ddvorigins.voidbringer.description": "An ancient species born of the voids, this species is acclimatised to living as one with the abyss.",
+
+  "power.ddvorigins.voidbringer/voidstart.name": "From the.. bottom?",
+  "power.ddvorigins.voidbringer/voidstart.description": "You begin your journey in the void below where most do.",
+
+  "power.ddvorigins.voidbringer/voidwalk.name": "Voidwalker",
+  "power.ddvorigins.voidbringer/voidwalk.description": "Your heritage of void-dwelling leaves you capable of surviving at the void's edge. You also possess enhanced mobility while there.",
+
+  "power.ddvorigins.voidbringer/wormhole.name": "Abyssal Wormhole",
+  "power.ddvorigins.voidbringer/wormhole.description": "The void enhances your power, granting you the ability to create a temporary wormhole between the void and surface at will. However, this wormhole affects others more beneficially than it affects you.",
+  "effect.ddvorigins.wormholes_blessing": "Wormhole's Blessing",
+
+  "power.ddvorigins.voidbringer/endboost.name": "Land of the Void",
+  "power.ddvorigins.voidbringer/endboost.description": "While in the sacred Land of the Void, known by others as 'The End', you gain a slight boost in stats.",
+
+  "power.ddvorigins.voidbringer/voidhit.name": "Focused Voidhit",
+  "power.ddvorigins.voidbringer/voidhit.description": "Using the power of the void to support you, landing many consecutive attacks charges a strong attack, unleashed with a critical hit. Your surroundings can apply alternate effects to the charging and attack.",
+  "effect.ddvorigins.void_stung": "Void Stung",
+
+  "power.ddvorigins.voidbringer/food.name": "Fruits of the Void",
+  "power.ddvorigins.voidbringer/food.description": "You rely on a diet of food that has been blessed by the void. Other foods and drinks are incredibly harmful to you.",
+  "item.ddvorigins.void_fruit": "Void Fruit",
+  "effect.ddvorigins.abysmal_intoxication": "Abysmal Intoxication",
+
+  "power.ddvorigins.voidbringer/blessing.name": "False Blessing",
+  "power.ddvorigins.voidbringer/blessing.description": "You sacrifice a fraction of your health to worship the void. As such, you journey with only 8 full hearts."
 }

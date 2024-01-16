@@ -5,15 +5,13 @@ import dev.diamond.ddvorigins.power.action.entity.AddCooldownUnboundEntityAction
 import dev.diamond.ddvorigins.power.action.entity.ChorusWarpEntityAction;
 import dev.diamond.ddvorigins.power.action.entity.SendHudIconEntityAction;
 import dev.diamond.ddvorigins.power.badge.TagBadge;
-import dev.diamond.ddvorigins.power.type.PreventWaterAmbientSoundsPower;
+import dev.diamond.ddvorigins.power.type.*;
 import io.github.apace100.apoli.power.factory.PowerFactory;
 import io.github.apace100.apoli.power.factory.action.ActionFactory;
 import io.github.apace100.apoli.power.factory.condition.ConditionFactory;
 import io.github.apace100.apoli.registry.ApoliRegistries;
 import io.github.apace100.calio.data.SerializableData;
 import dev.diamond.ddvorigins.power.action.entity.AtomicRelocateEntityAction;
-import dev.diamond.ddvorigins.power.type.AerialAffinityPower;
-import dev.diamond.ddvorigins.power.type.ConstantStandardVelocityModifierPower;
 import io.github.apace100.origins.badge.BadgeFactory;
 import io.github.apace100.origins.badge.BadgeManager;
 import net.diamonddev.libgenetics.common.api.v1.interfaces.RegistryInitializer;
@@ -29,6 +27,9 @@ public class InitPowers implements RegistryInitializer {
         registerPower(AerialAffinityPower.getFactory());
         registerPower(ConstantStandardVelocityModifierPower.getFactory());
         registerPower(PreventWaterAmbientSoundsPower.getFactory());
+        registerPower(VoidFruitEatingPower.getFactory());
+        registerPower(VoidspawnPower.getFactory());
+        registerPower(VoidwalkPower.getFactory());
 
         // Actions
         registerEntityAction(AtomicRelocateEntityAction.getFactory());

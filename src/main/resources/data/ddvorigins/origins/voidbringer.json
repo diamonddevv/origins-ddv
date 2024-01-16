@@ -1,0 +1,17 @@
+{
+    "powers": [
+        "ddvorigins:voidbringer/voidstart",
+        "ddvorigins:voidbringer/voidwalk",
+        "ddvorigins:voidbringer/wormhole",
+        "ddvorigins:voidbringer/endboost",
+        "ddvorigins:voidbringer/voidhit",
+
+        "ddvorigins:voidbringer/food",
+        "ddvorigins:voidbringer/blessing"
+    ],
+    "icon": {
+        "item": "minecraft:ender_eye"
+    },
+    "order": 5,
+    "impact": 3
+}

@@ -1,0 +1,8 @@
+{
+  "type": "origins:attribute",
+  "modifier": {
+    "attribute": "generic.max_health",
+    "operation": "multiply_base_multiplicative",
+    "value": -0.2
+  }
+}

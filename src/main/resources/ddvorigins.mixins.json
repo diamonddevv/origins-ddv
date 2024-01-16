@@ -6,8 +6,11 @@
     "mixins": [
         "AmbientSoundPlayerMixin",
         "CooldownPowerAccessor",
+        "EntityMixin",
         "LivingEntityMixin",
-        "PlayerEntityMixin"
+        "PlayerEntityMixin",
+        "PlayerManagerMixin",
+        "ServerPlayerEntityMixin"
     ],
     "client": [
         "ClientPlayerEntityMixin",

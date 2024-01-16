@@ -18,7 +18,7 @@ import net.minecraft.util.math.Vec3d;
 import java.util.function.Consumer;
 
 public class ChronokineticEffect extends StatusEffect {
-    private static final double FACTOR = 1.5;
+    private static final double FACTOR = -1 + 1.5;
 
     public ChronokineticEffect() {
         super(StatusEffectCategory.NEUTRAL, 0xEFDE5F); // https://colornames.org/color/efde5f

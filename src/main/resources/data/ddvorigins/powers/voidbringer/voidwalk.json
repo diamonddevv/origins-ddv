@@ -1,0 +1,7 @@
+{
+  "type": "ddvorigins:voidwalk",
+  "floor_threshold": 12,
+  "elevation_threshold": 20,
+  "night_vision": true,
+  "ice_physics": true
+}
