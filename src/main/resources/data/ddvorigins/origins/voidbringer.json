@@ -13,5 +13,7 @@
         "item": "minecraft:ender_eye"
     },
     "order": 5,
-    "impact": 3
+    "impact": 3,
+
+    "unchoosable": true
 }

@@ -11,5 +11,7 @@
   ],
   "icon": "minecraft:white_dye",
   "order": 10,
-  "impact": 2
+  "impact": 2,
+
+  "unchoosable": true
 }

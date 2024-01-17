@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import dev.diamond.ddvorigins.client.gui.IHudIcon;
 import dev.diamond.ddvorigins.effect.AbysmalIntoxicationEffect;
+import dev.diamond.ddvorigins.effect.VoidStungEffect;
 import dev.diamond.ddvorigins.registry.InitEffects;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -55,7 +56,7 @@ public abstract class InGameHudMixin {
     }
 
 
-    // CUSTOM EFFECT ICONS
+    // CUSTOM EFFECT ICONS ; doesnt account for non full health oop
 
     @WrapOperation(
             method = "drawHeart",
@@ -71,7 +72,11 @@ public abstract class InGameHudMixin {
         if (client.cameraEntity instanceof PlayerEntity player) {
 
             if (player.hasStatusEffect(InitEffects.ABYSMAL_INTOXICATION)) tex = AbysmalIntoxicationEffect.HEARTS;
+            if (player.hasStatusEffect(InitEffects.VOID_STUNG)) tex = VoidStungEffect.HEARTS;
 
+            if (type == InGameHud.HeartType.CONTAINER) {
+                tex = texture;
+            }
 
             if (texture != tex) {
                 u = halfHeart ? 9 : 0;
