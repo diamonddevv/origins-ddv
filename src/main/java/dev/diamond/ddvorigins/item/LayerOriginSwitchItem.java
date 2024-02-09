@@ -45,7 +45,7 @@ public class LayerOriginSwitchItem extends Item {
             ModComponents.ORIGIN.get(user).setOrigin(layer, Origin.EMPTY);
             SendSelectLayeredOrigin.Data data = new SendSelectLayeredOrigin.Data();
             data.layerId = layer.getIdentifier();
-            NerveNetworker.send((ServerPlayerEntity) user, Netcode.SEND_SELECT_LAYERED_ORIGIN, data);
+            //NerveNetworker.send((ServerPlayerEntity) user, Netcode.SEND_SELECT_LAYERED_ORIGIN, data);
 
             if (!user.getAbilities().creativeMode) {
                 stack.decrement(1);

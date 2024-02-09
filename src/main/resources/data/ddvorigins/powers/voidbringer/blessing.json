@@ -2,7 +2,7 @@
   "type": "origins:attribute",
   "modifier": {
     "attribute": "generic.max_health",
-    "operation": "multiply_base_multiplicative",
+    "operation": "multiply_base",
     "value": -0.2
   }
 }

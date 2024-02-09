@@ -36,7 +36,7 @@ public class DDVOriginsClient implements ClientModInitializer {
 
         ParticleFactoryRegistry.getInstance().register(InitParticles.CLOCK, EndRodParticle.Factory::new);
 
-        NervePacketRegistry.initClientS2CReciever(Netcode.SEND_SELECT_LAYERED_ORIGIN);
+        //NervePacketRegistry.initClientS2CReciever(Netcode.SEND_SELECT_LAYERED_ORIGIN);
         NervePacketRegistry.initClientS2CReciever(Netcode.SEND_HUD_ICON);
         NervePacketRegistry.initClientS2CReciever(Netcode.SEND_CHRONOKINETIC_USER_DATA);
     }

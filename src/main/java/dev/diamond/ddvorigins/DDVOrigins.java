@@ -42,11 +42,11 @@ public class DDVOrigins implements ModInitializer {
 		new InitEventCallbacks().register();
 		new InitSoundEvents().register();
 
-		TradeOfferHelper.registerWanderingTraderOffers(1, factories -> {
+		/*TradeOfferHelper.registerWanderingTraderOffers(1, factories -> {
 			if (DDVOriginsConfig.SERVER.modConfig.canObtainLayeredOrbs) { // only register if enabled in config
 				factories.add(new SellLayeredOrbFactory());
 			}
-		});
+		});*/
 
 		ItemGroupModifications.apply();
 		//
@@ -61,12 +61,12 @@ public class DDVOrigins implements ModInitializer {
 	public static class ItemGroupModifications {
 		public static void apply() {
 			ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(content -> {
-				content.addAfter(ModItems.ORB_OF_ORIGIN, LayerOriginSwitchItem.getStackWithDefaultLayer(InitItems.LAYER_SWITCHER));
+				//content.addAfter(ModItems.ORB_OF_ORIGIN, LayerOriginSwitchItem.getStackWithDefaultLay//er(InitItems.LAYER_SWITCHER));
 			});
 		}
 	}
 
-	private static class SellLayeredOrbFactory implements TradeOffers.Factory {
+	/*private static class SellLayeredOrbFactory implements TradeOffers.Factory {
 		@Nullable
 		@Override
 		public TradeOffer create(Entity entity, Random random) {
@@ -74,5 +74,5 @@ public class DDVOrigins implements ModInitializer {
 			ItemStack stack = LayerOriginSwitchItem.getStackWithLayer(InitItems.LAYER_SWITCHER, layer.getIdentifier());
 			return new TradeOffer(new ItemStack(Items.EMERALD_BLOCK, 16), stack, 1, 100, 10);
 		}
-	}
+	}*/
 }

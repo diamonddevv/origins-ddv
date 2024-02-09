@@ -44,7 +44,7 @@ public class LibGeneticsApiImpl implements LibGeneticsApi {
 
             Collection<ServerPlayerEntity> spes = EntityArgumentType.getPlayers(context, "players");
 
-            spes.forEach(spe -> spe.giveItemStack(LayerOriginSwitchItem.getStackWithDefaultLayer(InitItems.LAYER_SWITCHER)));
+            //spes.forEach(spe -> spe.giveItemStack(LayerOriginSwitchItem.getStackWithDefaultLayer(InitItems.LAYER_SWITCHER)));
             context.getSource().sendFeedback(() -> Text.literal("Gave layered orb with default layer"), true);
             return 1;
         }
@@ -53,7 +53,7 @@ public class LibGeneticsApiImpl implements LibGeneticsApi {
             Collection<ServerPlayerEntity> spes = EntityArgumentType.getPlayers(context, "players");
 
             OriginLayer layer = LayerArgumentType.getLayer(context, "layer");
-            spes.forEach(spe -> spe.giveItemStack(LayerOriginSwitchItem.getStackWithLayer(InitItems.LAYER_SWITCHER, layer.getIdentifier())));
+            //spes.forEach(spe -> spe.giveItemStack(LayerOriginSwitchItem.getStackWithLayer(InitItems.LAYER_SWITCHER, layer.getIdentifier())));
 
             context.getSource().sendFeedback(() -> Text.literal("Gave layered orb with layer: " + LayerOriginSwitchItem.parseLayerAsNiceString(layer)), true);
             return 1;
